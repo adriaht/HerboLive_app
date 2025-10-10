@@ -1,0 +1,4 @@
+[submodule "herbolive-backend"]
+	path = herbolive-backend
+	url = https://github.com/adriaht/HerboLive_node.git
+	branch = main
