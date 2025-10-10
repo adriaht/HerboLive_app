@@ -44,9 +44,6 @@
     </div>
   </div>
 
-  <!-- Contenedor principal:
-       ---> quitar inline padding-top aquí (lo calculamos dinámicamente)
-  -->
   <div class="container main-with-fixed-tabs">
     <!-- INTRO -->
     <div id="intro" class="col s12">
@@ -75,10 +72,8 @@
         </div>
       </div>
 
-      <!-- resultados búsqueda (exclusivos) -->
       <div id="search-results-container" class="row" style="min-height:220px;"></div>
 
-      <!-- paginador búsqueda (solo visible si hay >1 página) -->
       <div id="pagination-search" class="center-align" style="display:none; margin-top:12px; position: sticky; bottom: 0; background: rgba(250,250,250,0.95); padding:8px 0; z-index:10;">
         <button id="prev-page-search" class="btn-flat green-text" title="Página anterior">
           <i class="material-icons left">chevron_left</i>
@@ -94,7 +89,6 @@
     <div id="todas" class="col s12">
       <div id="plants-container" class="row" style="min-height:220px;"></div>
 
-      <!-- paginador "Todas" (solo visible si hay >1 página) -->
       <div id="pagination-all" class="center-align" style="display:none; margin-top:12px; position: sticky; bottom: 0; background: rgba(250,250,250,0.95); padding:8px 0; z-index:10;">
         <button id="prev-page-all" class="btn-flat green-text" title="Página anterior">
           <i class="material-icons left">chevron_left</i>
@@ -107,7 +101,7 @@
     </div>
   </div>
 
-  <!-- small script: ajustar padding-top y top de tabs según altura real del nav/tabs -->
+  <!-- Ajuste dinámico para tabs fijadas -->
   <script>
     function adjustForFixedTabs() {
       const nav = document.querySelector('nav');
@@ -116,27 +110,18 @@
 
       if (!nav || !tabsWrapper || !mainContainer) return;
 
-      // recalcular alturas
-      // nav.getBoundingClientRect().height y tabsWrapper.getBoundingClientRect().height
       const navH = nav.getBoundingClientRect().height || 0;
-      // Temporariamente poner top = navH para medir tabs height en su posición final
       tabsWrapper.style.top = navH + 'px';
-      // fuerza reflow para obtener altura exacta
       const tabsH = tabsWrapper.getBoundingClientRect().height || 0;
-
       const totalOffset = Math.round(navH + tabsH);
 
-      // Aplicar como variable CSS y estilo directo para compatibilidad
       document.documentElement.style.setProperty('--top-offset', totalOffset + 'px');
       mainContainer.style.paddingTop = totalOffset + 'px';
-      // Asegurar que el wrapper está visible en la posición correcta
       tabsWrapper.style.top = navH + 'px';
     }
 
-    // Ejecutar al cargar y al cambiar tamaño
     window.addEventListener('load', () => {
       adjustForFixedTabs();
-      // si Materialize inicializa tabs más tarde, reintentar un poco después
       setTimeout(adjustForFixedTabs, 300);
     });
     window.addEventListener('resize', () => {
@@ -144,10 +129,55 @@
     });
   </script>
 
-  <!-- Materialize JS -->
-  <script src="js/materialize.min.js"></script>
+  <!-- Crear namespace global si no existe (necesario para main.js antiguo) -->
+  <script>window.HerboLive = window.HerboLive || {};</script>
 
-  <!-- App -->
-  <script src="js/app.js"></script>
+  <!-- -------- SCRIPTS: orden recomendado (defer mantiene orden y ejecuta tras DOM parse) -------- -->
+  <!-- Materialize JS -->
+  <script src="js/materialize.min.js" defer></script>
+
+  <!-- Archivos de datos / configuración / utilidades -->
+  <script src="js/config.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/csv.js" defer></script>
+
+  <!-- API / carga / renderizado -->
+  <script src="js/api.js" defer></script>
+  <script src="js/loader.js" defer></script>
+  <script src="js/render.js" defer></script>
+
+  <!-- UI / modal / búsqueda / debug -->
+  <script src="js/modal.js" defer></script>
+  <script src="js/search.js" defer></script>
+  <script src="js/debug.js" defer></script>
+
+  <!-- entrypoint: main.js (último) -->
+  <script src="js/main.js" defer></script>
+
+  <!-- starter: intenta llamar a window.initApp() si existe (compatibilidad) -->
+  <script>
+    (function () {
+      function callInitApp() {
+        try {
+          if (typeof window.initApp === 'function') { window.initApp(); return; }
+          if (typeof window.main === 'function') { window.main(); return; }
+          // si usas el main.js antiguo que expone HL.main, no hace falta llamar nada aquí
+        } catch (err) {
+          console.error('Error al arrancar la app:', err);
+        }
+      }
+
+      document.addEventListener('deviceready', function () {
+        if (window.M) { const tabs = document.querySelectorAll('.tabs'); M.Tabs.init(tabs, {}); }
+        callInitApp();
+      }, false);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.M) { const tabs = document.querySelectorAll('.tabs'); M.Tabs.init(tabs, {}); }
+        callInitApp();
+      });
+    })();
+  </script>
+
 </body>
 </html>
