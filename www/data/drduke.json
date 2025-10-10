@@ -1,0 +1,6500 @@
+[
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "2432",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "Biological activity/property of a chemical",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "ACTIVITY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Bioactivity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "ACTUPPER",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Bioactivity, normalized, all UPPERCASE",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "DEFINITION",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Definition of Activity (currently duplicates Activity)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ACTIVITIES",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "28929",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "Aggregation of a phytochemical and a bioactivity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "AGGNO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Aggregation number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "CHEM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phytochemical name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "ACTIVITY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Bioactivity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "DOSAGE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Dosage amounts as LD50, Ldlo, PTD, RDA, ADI, etc.",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "MAJORACT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Major activity of phytochemical (currently not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "AGGREGAC",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "2630",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "FNFNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "'FNF' plant ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "INDIVIDUAL",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Number of individual assays?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "NAME",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Author name associated with assay; also contains Aggregated/Unaggregated information",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "COMMENTS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Comments, especially Aggregated/Unaggregated information",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ASSAY",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "3832",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "chem_id",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Chemical ID number, = ID value in CHEMICALS table",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "part_id",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Referenced plant part ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "cnt",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Number of plant species containg that chemical/part combination",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "avg",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Average PPM for plants with",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEM_MEANS",
+      "RecordCount": "",
+      "column": "std",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Standard Deviation",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "29585",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "CHEM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phytochemical name, UPPERCASE",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "CHEMID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Chemical unique identifier name (packed UPPERCASE, no spaces, punctuation characters e.g. parentheses, hyphens, prime (apostrophe), & periods removed)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "CASNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "CAS Registry Number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "TODAY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "[not used]",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "INITIALS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "[not used]",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CHEMICALS",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "8926",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "PLNA",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Plant name (Genus species)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "PLCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Plant code (ID number)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "AUTHOR",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic authority name, abbrev.",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "VALID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "CODES",
+      "RecordCount": "",
+      "column": "PLCOS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "? (duplicate of PLCO)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "2920",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "CNNAM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Common name of plant",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "FNFNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "'FNF' plant ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "CNID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Common name ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "COMMON_NAMES",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "DOSAGE",
+      "RecordCount": "1627",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "DOSAGE",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "DOSAGE",
+      "RecordCount": "",
+      "column": "CHEM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phytochemical name, UPPERCASE",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "DOSAGE",
+      "RecordCount": "",
+      "column": "DOSAGE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Dosage amounts as LD50, Ldlo, PTD, RDA, ADI, etc.",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "DOSAGE",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "82873",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "ETHNO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Ethnobotanical use (Plant + Activity) ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "ACTIVITY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Bioactivity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "GENUS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Genus (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "SPECIES",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Species (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "SPAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Species authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "SPRANK",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "SPXNAM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "SPXAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "FAMILY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Family (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "CNAME",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Common name of plant",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "COUNTRY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Country name of ethno. usage; may have qualifier in parens., e.g. tribe, community, region",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "short form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "LONGREF",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "long form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "EFFECTIVE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "effective as plant material vs. chemical extract?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "TAXON",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "TAXAUTHOR",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "ETHNOBOT",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "104388",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "FNFNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "'FNF' plant ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "CHEM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phytochemical name, UPPERCASE",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "CHEMCLASS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Chemical class",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "PPCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Referenced plant part 2-letter code",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "PLCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Plant code (ID number)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "AMT_OR_LO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Lowest measured PPM for a chemical (original)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "AMT_HI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Highest measured PPM for a chemical",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "AMT_ULHI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "EOPCT_OR_LO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? % low orig. (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "EOPCT_HI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? % high (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "INDIVIDUAL",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Number of individual assays (values: 0-11)?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "TRACE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "trace amount",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "REFYR",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "year of publication",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "LT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "less than (\"<\"\") ?\"",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "NAPREF",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "reference number of some sort?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "AMT_LO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Lowest measured PPM for a chemical",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "AMT_OR_HI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Highest measured PPM for a chemical (original)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "EOPCT_LO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? % low (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "EOPCT_OR_HI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? % high orig. (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "QUANT_UNIT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? Quantitative unit (used only very rarely)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FARMACY_NEW",
+      "RecordCount": "",
+      "column": "CHEMID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Chemical unique identifier name (packed UPPERCASE, no spaces, punctuation characters e.g. parentheses, hyphens, prime (apostrophe), & periods removed)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "2376",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "FNFNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "'FNF' plant ID number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "TAXON",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "TAXAUTHOR",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "GENUS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Genus (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPECIES",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Species (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SUBSPECIES",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Subspecies (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "VARIETY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Variety (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "FORMA",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Forma",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "CULTIVAR",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Cultivar",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Species authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPSAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Subspecies authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPVAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Variety authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPFAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Forma authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "CULTAUT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Cultivar authority name",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "FAMILY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Family (taxonomic)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "SPCMT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Taxonomic notes: synonyms, hybrids, etc.",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "PLCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Plant code (ID number)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "TAXNO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Taxonomic number in ?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "VALIDTAXNO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Valid taxonomic number in ? (duplicate of TAXNO)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "GRINVERIFY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "? (not used)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "USEAGE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Usage: G - General; F - Food; M - Medicinal",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "FNFTAX",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "115",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "PPCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Referenced plant part code",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "PPNA",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Referenced plant part name. See http://www.ars-grin.gov/cgi-bin/duke/listParts.pl",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "PARTS",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "2043",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "REFERENCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Abbreviated form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "LONGREF",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Long form of reference",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "NOTE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Miscellaneous notes and details",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "USERID",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "User ID",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "CREATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Date With Time",
+      "size": "8",
+      "format": "m/d/yyyy",
+      "definition/notes": "Date record created",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "REFERENCES",
+      "RecordCount": "",
+      "column": "MODIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Date record modified",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "SUPERACT",
+      "RecordCount": "5358",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "SUPERACT",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "SUPERACT",
+      "RecordCount": "",
+      "column": "SUPERACT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Broad category that groups together a number of related activities",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "SUPERACT",
+      "RecordCount": "",
+      "column": "ACTIVITY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Bioactivity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "2824",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "ID",
+      "attributes": "Variable Length, Auto-Increment",
+      "required": "FALSE",
+      "type": "Long Integer",
+      "size": "4",
+      "format": "",
+      "definition/notes": "Row number, excluding column header",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "LOCNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Location number?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "SOURCE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Source (not used - contains dummy vals XXX)?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "REPTRYLD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "*** yield?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "WEEDED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Weeded? (Y|X|blank)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "CULVATED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Cultivated? (Y|X|blank)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "NUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "*** number?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PLCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Plant code (ID number)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "LOCNO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Location number?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "VARYD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "ANAVPRCP",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Annual average precipitation?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "BIOTEMP",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "temperature?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "SOIL",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Soil type code?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PH",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "pH",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "RH",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Relative humidity",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "IRRIG",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Irrigation (R|0)?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "MINTEMP",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Minimum temperature",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "MAXTEMP",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Maximum temperature",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "GROWSEAS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Growing season",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YIELDLO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Low yield",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YIELDHI",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "High yield",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PARTHARV",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Plant part harvested?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "NFERT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Nitrogen fertilizer",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PFERT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phosphorus fertilizer",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "KFERT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Potassium fertilizer",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PESTCIDE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Pesticide",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "HERBCIDE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Herbicide",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "SEEDLVL",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Seed level",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "MANURE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Manure",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "INTCROP",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "*** crop?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "FUNGCIDE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Fungicide",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "RATOON",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YRSOBS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Years of observations",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "AMTFERT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Fertilizer amount",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "FERTRIAL",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Fertilizer trial",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "FROSTCO",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Frost ***?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "ABSMINT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Absolute minimum temperature?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "ABSMAXT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Absolute maximum temperature?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "OTHFERT",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Other fertilizer",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YRW1",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Year W1?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YRW2",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "Year W2?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YRSYLD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Number of years of yield data?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "Y1YLD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "1st year of yield data",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "Y2YLD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "2nd year of yield data",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "CONTYLD",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Continuous yield",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "CONTWEA",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Continuous ***?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "YMATCHW",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Continuous ***?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "VERIFIED",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Verified? (V|NV)",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "EXPTYPE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Exp*** type",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "NTYPE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Nitrogen type",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "PTYPE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Phosphorus type",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "KTYPE",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Potassium type",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "WEEDNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Weed number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "CULTNUM",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Cultivar number",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "WSS",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Double",
+      "size": "8",
+      "format": "General Number",
+      "definition/notes": "?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "YIELDS",
+      "RecordCount": "",
+      "column": "TEMPORARY",
+      "attributes": "Variable Length",
+      "required": "FALSE",
+      "type": "Short Text",
+      "size": "255",
+      "format": "",
+      "definition/notes": "Temporary ***?",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  },
+  {
+    "_raw": {
+      "table": "",
+      "RecordCount": "",
+      "column": "",
+      "attributes": "",
+      "required": "",
+      "type": "",
+      "size": "",
+      "format": "",
+      "definition/notes": "",
+      "": ""
+    },
+    "scientific_name": "",
+    "common_name": "",
+    "medicinal": "",
+    "habitat": "",
+    "image_url": ""
+  }
+]

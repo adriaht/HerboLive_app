@@ -1,0 +1,177 @@
+/* ===============================
+   HERBOLIVE - Estilos principales
+   =============================== */
+
+/* Paleta:
+   Verde oscuro: #2e7d32
+   Verde medio: #66bb6a
+   Verde claro: #c8e6c9
+   Blanco cálido: #f9fbe7
+*/
+
+/* Fondo general */
+body {
+  background-color: #f9fbe7;
+  font-family: 'Roboto', sans-serif;
+  color: #2e7d32;
+}
+
+/* Navbar */
+nav {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+nav .brand-logo {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+/* Tabs */
+.tabs .tab a {
+  color: #2e7d32;
+  font-weight: 500;
+}
+.tabs .tab a.active {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+  border-radius: 5px 5px 0 0;
+}
+.tabs .indicator {
+  background-color: #2e7d32;
+}
+
+/* Cards generales */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card .card-image img {
+  border-bottom: 4px solid #66bb6a;
+}
+.card .card-content {
+  color: #2e7d32;
+}
+
+/* Botones */
+.btn,
+.btn-flat {
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: #388e3c !important;
+}
+
+/* Campo de búsqueda */
+#search-input {
+  border-bottom: 2px solid #2e7d32 !important;
+}
+#search-input:focus {
+  border-bottom: 2px solid #66bb6a !important;
+  box-shadow: 0 1px 0 0 #66bb6a !important;
+}
+#search-btn {
+  margin-top: 10px;
+}
+
+/* Contenedor de resultados */
+#search-results, 
+#plants-container,
+#search-results-container {
+  margin-top: 20px;
+}
+
+/* Plantas (cards en 2 columnas) */
+.plant-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.plant-card:hover {
+  transform: scale(1.03);
+}
+
+/* Imagen dentro de card */
+.plant-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Ajuste de columnas */
+@media (min-width: 600px) {
+  .plant-card-wrapper {
+    width: 50%; /* 2 columnas */
+    float: left;
+  }
+}
+
+@media (max-width: 599px) {
+  .plant-card-wrapper {
+    width: 50%; /* Mantener 2 columnas también en móvil */
+    float: left;
+  }
+}
+
+/* Paginación */
+#prev-page, #next-page, #prev-page-all, #next-page-all, #prev-page-search, #next-page-search {
+  font-weight: 600;
+}
+#prev-page i, #next-page i {
+  vertical-align: middle;
+}
+
+/* Texto del botón traducido */
+#translation-note {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #757575;
+}
+
+/* Modal de detalles de planta */
+.modal {
+  border-radius: 12px;
+}
+.modal-content h4 {
+  color: #2e7d32;
+}
+.modal-content p {
+  line-height: 1.6;
+}
+.modal-footer .btn-flat {
+  color: #2e7d32;
+}
+
+.btn-flat{
+  width: 28%;
+}
+
+/* ============================
+   Tabs fijas (fixed tabs) - comportamiento responsivo
+   ============================ */
+
+/* El top lo fijamos por JS (para que se ajuste a la altura real del nav) */
+#tabs-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.98);
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Mantener el ancho centrado como el .container */
+#tabs-wrapper .container {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* Empuja el contenido hacia abajo para no quedar tapado por las tabs fijas.
+   El valor real se establece por JS en la variable CSS --top-offset */
+.main-with-fixed-tabs {
+  padding-top: var(--top-offset, 120px);
+}
+
+/* Opcional - estilo de las tabs cuando fijadas */
+.tabs .tab a { color: #2e7d32; }
+.tabs .tab a.active { color: #1b5e20; }
