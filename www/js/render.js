@@ -67,7 +67,7 @@
     const pag = document.getElementById(paginationId);
     if (pag) {
       if (totalPages > 1) {
-        pag.style.display = 'flex';
+        pag.style.display = 'block';
         const pageSpan = document.getElementById(pageLabelId);
         if (pageSpan) pageSpan.textContent = `Página ${page} de ${totalPages}`;
       } else {

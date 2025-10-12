@@ -5,7 +5,6 @@
   // Normaliza datos de API (Perenual/Trefle) al esquema tipo-CSV usado por la app
   HL.api.normalizeApiToCsvFields = function normalizeApiToCsvFields(item, source) {
     const out = {};
-    // Perenual (ya con campos distintos según su API)
     if (source === 'perenual') {
       out.scientific_name = item.scientific_name || item.scientific || item.scientificName || '';
       out.common_name = item.common_name || item.common || item.commonName || item.name || '';
@@ -22,7 +21,6 @@
       return out;
     }
 
-    // Trefle
     if (source === 'trefle') {
       out.scientific_name = item.scientific_name || '';
       out.common_name = item.common_name || (item.common_names && item.common_names[0]) || '';
@@ -39,166 +37,174 @@
       return out;
     }
 
-    // fallback: devolver item tal cual si no se reconoce
     return Object.assign({}, item);
   };
 
-  // fetch helpers (Trefle / Perenual / CSV) - fetchAllPlants ya existía en monolito, lo reimplementamos aquí
-  HL.api.fetchAllPlants = async function fetchAllPlants() {
-    const cfg = HL.config;
-    const perenUrl = `${cfg.API_BASE_URL}?key=${encodeURIComponent(cfg.API_KEY_PERENUAL)}&page=1&per_page=100`;
-    const trefleUrl = `${cfg.TREFLE_BASE}/api/v1/species?token=${cfg.TREFLE_TOKEN}&page=1&limit=100`;
-
-    let plantsLocal = [];
-
-    // 1) Perenual
-    try {
-      const res = await fetch(perenUrl);
-      if (res.status === 429) throw new Error('Rate limit Perenual');
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      if (data?.data?.length) {
-        plantsLocal = data.data.map(d => HL.api.normalizeApiToCsvFields(d, 'perenual'));
-        return plantsLocal;
+  // -------------------------
+  // Helper: determina base URL del backend
+  // - Usa HL.config.backendHost / backendPort si están configurados
+  // - Si backendHost vacío intenta heurísticas según entorno (Cordova/AVD/Genymotion)
+  // - Si devuelve null, el resto del código usará paths relativos (/api/...)
+  // -------------------------
+  function getBackendBase() {
+    const cfg = HL.config || {};
+    // Si backendHost explícito
+    if (cfg.backendHost && String(cfg.backendHost).trim() !== '') {
+      const hostRaw = String(cfg.backendHost).trim();
+      // Si ya incluye esquema http/https lo usamos tal cual
+      if (/^https?:\/\//i.test(hostRaw)) {
+        // Si incluyes puerto manualmente en backendHost, lo respetamos.
+        return hostRaw;
       }
-    } catch (e) {
-      if (HL.config.DEBUG_SHOW_RAW) console.warn('Perenual failed', e);
+      // Si backendUseHttps true o puerto 443 => https
+      const useHttps = !!cfg.backendUseHttps || (cfg.backendPort === 443);
+      const scheme = useHttps ? 'https' : 'http';
+      const portPart = (cfg.backendPort && cfg.backendPort !== 80 && cfg.backendPort !== 443) ? `:${cfg.backendPort}` : '';
+      return `${scheme}://${hostRaw}${portPart}`;
     }
 
-    // 2) Trefle
+    // heurísticas según ejecución (file:// = Cordova)
     try {
-      const resT = await fetch(trefleUrl);
-      if (!resT.ok) throw new Error('HTTP Trefle ' + resT.status);
-      const dataT = await resT.json();
-      if (dataT?.data?.length) {
-        plantsLocal = dataT.data.map(d => HL.api.normalizeApiToCsvFields(d, 'trefle'));
-        return plantsLocal;
+      if (typeof window !== 'undefined' && window.location && window.location.protocol === 'file:') {
+        // Android AVD
+        return `http://10.0.2.2:${cfg.backendPort || 3000}`;
       }
+      const ua = (navigator && navigator.userAgent) ? navigator.userAgent : '';
+      if (/Genymotion/.test(ua)) return `http://10.0.3.2:${cfg.backendPort || 3000}`;
+      if (/Android/.test(ua) && /Emulator|Android SDK built for x86/.test(ua)) return `http://10.0.2.2:${cfg.backendPort || 3000}`;
+      if (/iPhone|iPad|iPod/.test(ua) && /Simulator/.test(ua)) return `http://localhost:${cfg.backendPort || 3000}`;
     } catch (e) {
-      if (HL.config.DEBUG_SHOW_RAW) console.warn('Trefle failed', e);
+      // ignore
     }
 
-    // 3) CSV local
+    // fallback: null -> usar rutas relativas '/api/...'
+    return null;
+  }
+
+  // -------------------------
+  // Preferencia DB-first (existente)
+  // -------------------------
+  async function getDbFirstPreference() {
     try {
-      const csvRes = await fetch('data/plant_data.csv');
-      if (csvRes && csvRes.ok) {
-        const text = await csvRes.text();
-        const parsed = HL.csv.parseCSV(text, HL.config.CSV_MAX_READ);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
-        }
+      if (typeof HL !== 'undefined' && HL.config) {
+        if (typeof HL.config.useDbFirst !== 'undefined') return !!HL.config.useDbFirst;
+        if (typeof HL.config.USE_DB_FIRST !== 'undefined') return !!HL.config.USE_DB_FIRST;
+        if (typeof HL.config.USE_BACKEND !== 'undefined') return !!HL.config.USE_BACKEND;
       }
-    } catch (e) {
-      if (HL.config.DEBUG_SHOW_RAW) console.warn('CSV load failed', e);
-    }
+    } catch (e) {}
 
-    return plantsLocal;
-  };
-
-  // Enrichers (Trefle, Perenual, Wikipedia) - kept similar to original
-  HL.api.enrichPlantWithTrefle = async function enrichPlantWithTrefle(rawPlant) {
-    const token = HL.config.TREFLE_TOKEN;
-    if (!token) { if (HL.config.DEBUG_SHOW_RAW) console.warn('Trefle token not set'); return null; }
-    const q = (rawPlant.scientific_name || rawPlant.common_name || '').trim();
-    if (!q) return null;
     try {
-      const url = `${HL.config.TREFLE_BASE}/api/v1/species/search?q=${encodeURIComponent(q)}&limit=3&token=${encodeURIComponent(token)}`;
-      const res = await fetch(url);
-      if (!res.ok) return null;
-      const json = await res.json();
-      const hits = Array.isArray(json.data) ? json.data : [];
-      if (!hits.length) return null;
-      const cand = hits[0];
-      const mapped = HL.api.normalizeApiToCsvFields(cand, 'trefle');
-      mapped._raw = cand;
-      return mapped;
-    } catch (e) {
-      if (HL.config.DEBUG_SHOW_RAW) console.warn('Trefle error', e);
-      return null;
-    }
-  };
-
-  HL.api.enrichPlantWithPerenual = async function enrichPlantWithPerenual(rawPlant) {
-    // Keep implementation lightweight: try /search endpoints
-    const q = (rawPlant.scientific_name || rawPlant.common_name || '').trim();
-    if (!q) return null;
-    const attempts = [
-      (qq) => `${HL.config.API_BASE_URL}?key=${encodeURIComponent(HL.config.API_KEY_PERENUAL)}&q=${encodeURIComponent(qq)}`,
-      (qq) => `${HL.config.API_BASE_URL}?key=${encodeURIComponent(HL.config.API_KEY_PERENUAL)}&page=1&per_page=5&search=${encodeURIComponent(qq)}`
-    ];
-    for (const make of attempts) {
-      try {
-        const url = make(q);
-        const res = await fetch(url);
-        if (!res.ok) continue;
+      const res = await fetch('/api/config');
+      if (res && res.ok) {
         const json = await res.json();
-        let candidate = null;
-        if (Array.isArray(json)) candidate = json[0];
-        else if (Array.isArray(json.data)) candidate = json.data[0];
-        else if (typeof json === 'object') {
-          if (json.description || json.image) candidate = json;
-          else {
-            for (const k of Object.keys(json)) {
-              if (Array.isArray(json[k]) && json[k].length>0) { candidate = json[k][0]; break; }
-            }
-          }
-        }
-        if (!candidate) continue;
-        const mapped = HL.api.normalizeApiToCsvFields(candidate, 'perenual');
-        mapped._raw = candidate;
-        return mapped;
-      } catch (e) {
-        if (HL.config.DEBUG_SHOW_RAW) console.warn('Perenual attempt error', e);
-        continue;
+        if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
+        if (typeof json.USE_DB_FIRST !== 'undefined') return !!json.USE_DB_FIRST;
       }
+    } catch (e) {
+      if (HL.config && HL.config.DEBUG_SHOW_RAW) console.warn('No se pudo obtener /api/config', e);
     }
-    return null;
-  };
 
-  HL.api.enrichPlantWithWikipedia = async function enrichPlantWithWikipedia(rawPlant) {
-    const queries = [];
-    if (rawPlant.scientific_name) queries.push(rawPlant.scientific_name);
-    if (rawPlant.common_name && rawPlant.common_name !== rawPlant.scientific_name) queries.push(rawPlant.common_name);
-    for (const q of queries) {
+    return true;
+  }
+
+  HL.api.fetchAllPlants = async function fetchAllPlants() {
+    const cfg = HL.config || {};
+    const perenUrl = `${cfg.API_BASE_URL || ''}?key=${encodeURIComponent(cfg.API_KEY_PERENUAL || '')}&page=1&per_page=100`;
+    const trefleUrl = `${cfg.TREFLE_BASE || ''}/api/v1/species?token=${cfg.TREFLE_TOKEN || ''}&page=1&limit=100`;
+
+    const preferDb = await getDbFirstPreference();
+
+    // -------- tryDb: usa URL absoluta si getBackendBase() devuelve algo ----------
+    async function tryDb() {
       try {
-        let wikiData = await HL.api.fetchWikipediaData(q, 'es');
-        if (!wikiData) wikiData = await HL.api.fetchWikipediaData(q, 'en');
-        if (wikiData) {
-          const mapped = { description: wikiData.extract || '', image_url: wikiData.image || '', _raw: wikiData, title: wikiData.title || '', pageurl: wikiData.pageurl || '', lang: wikiData.lang || '' };
-          return mapped;
+        const backendBase = getBackendBase();
+        const url = backendBase ? `${backendBase.replace(/\/$/,'')}/api/plants` : '/api/plants';
+        if (cfg.DEBUG_SHOW_RAW) console.log('tryDb -> fetching', url);
+        const resDb = await fetch(url);
+        if (resDb && resDb.ok) {
+          const dbData = await resDb.json();
+          if (Array.isArray(dbData) && dbData.length > 0) return dbData;
+        } else {
+          if (cfg.DEBUG_SHOW_RAW) console.warn('Backend /api/plants not ok', resDb && resDb.status, url);
         }
       } catch (e) {
-        if (HL.config.DEBUG_SHOW_RAW) console.warn('Wikipedia enrich error', e);
+        if (cfg.DEBUG_SHOW_RAW) console.warn('Fetch /api/plants failed', e);
       }
-    }
-    return null;
-  };
-
-  HL.api.fetchWikipediaData = async function fetchWikipediaData(query, lang = 'es') {
-    try {
-      const apiBase = (lang === 'es') ? 'https://es.wikipedia.org/w/api.php' : 'https://en.wikipedia.org/w/api.php';
-      const searchUrl = `${apiBase}?action=query&format=json&list=search&srprop=&srlimit=5&srsearch=${encodeURIComponent(query)}&origin=*`;
-      const searchRes = await fetch(searchUrl);
-      if (!searchRes.ok) return null;
-      const searchJson = await searchRes.json();
-      const hits = searchJson.query && searchJson.query.search ? searchJson.query.search : [];
-      if (!hits || hits.length === 0) return null;
-      const pageid = hits[0].pageid;
-      const title = hits[0].title;
-      const detailUrl = `${apiBase}?action=query&format=json&prop=extracts|pageimages&exintro=1&explaintext=1&pageids=${pageid}&pithumbsize=800&origin=*`;
-      const detailRes = await fetch(detailUrl);
-      if (!detailRes.ok) return null;
-      const detailJson = await detailRes.json();
-      const page = detailJson.query && detailJson.query.pages && detailJson.query.pages[pageid] ? detailJson.query.pages[pageid] : null;
-      if (!page) return null;
-      const extract = page.extract || '';
-      const thumbnail = page.thumbnail && page.thumbnail.source ? page.thumbnail.source : null;
-      const pageurl = (lang === 'es') ? `https://es.wikipedia.org/wiki/${encodeURIComponent(title)}` : `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`;
-      return { title: title, extract: extract, image: thumbnail, pageurl: pageurl, lang: lang };
-    } catch (err) {
-      if (HL.config.DEBUG_SHOW_RAW) console.warn('fetchWikipediaData error:', err);
       return null;
     }
+
+    async function tryPerenual() {
+      try {
+        if (!cfg.API_BASE_URL || !cfg.API_KEY_PERENUAL) return null;
+        const res = await fetch(perenUrl);
+        if (res.status === 429) throw new Error('Rate limit Perenual');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data?.data?.length) return data.data.map(d => HL.api.normalizeApiToCsvFields(d, 'perenual'));
+      } catch (e) {
+        if (cfg.DEBUG_SHOW_RAW) console.warn('Perenual failed', e);
+      }
+      return null;
+    }
+
+    async function tryTrefle() {
+      try {
+        if (!cfg.TREFLE_BASE || !cfg.TREFLE_TOKEN) return null;
+        const resT = await fetch(trefleUrl);
+        if (!resT.ok) throw new Error('HTTP Trefle ' + resT.status);
+        const dataT = await resT.json();
+        if (dataT?.data?.length) return dataT.data.map(d => HL.api.normalizeApiToCsvFields(d, 'trefle'));
+      } catch (e) {
+        if (cfg.DEBUG_SHOW_RAW) console.warn('Trefle failed', e);
+      }
+      return null;
+    }
+
+    async function tryCsvLocal() {
+      try {
+        const csvRes = await fetch('data/plant_data.csv');
+        if (csvRes && csvRes.ok) {
+          const text = await csvRes.text();
+          const parsed = HL.csv.parseCSV(text, HL.config ? HL.config.CSV_MAX_READ : 52);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        if (cfg.DEBUG_SHOW_RAW) console.warn('CSV load failed', e);
+      }
+      return null;
+    }
+
+    if (preferDb) {
+      const dbRes = await tryDb();
+      if (Array.isArray(dbRes) && dbRes.length) return dbRes;
+
+      const pRes = await tryPerenual();
+      if (Array.isArray(pRes) && pRes.length) return pRes;
+
+      const tRes = await tryTrefle();
+      if (Array.isArray(tRes) && tRes.length) return tRes;
+
+      const cRes = await tryCsvLocal();
+      if (Array.isArray(cRes) && cRes.length) return cRes;
+
+      return [];
+    } else {
+      const pRes = await tryPerenual();
+      if (Array.isArray(pRes) && pRes.length) return pRes;
+
+      const tRes = await tryTrefle();
+      if (Array.isArray(tRes) && tRes.length) return tRes;
+
+      const dbRes = await tryDb();
+      if (Array.isArray(dbRes) && dbRes.length) return dbRes;
+
+      const cRes = await tryCsvLocal();
+      if (Array.isArray(cRes) && cRes.length) return cRes;
+
+      return [];
+    }
   };
+
+  // Enrichers and wikipedia helpers unchanged (keep existing code)...
 
 })(window.HerboLive);

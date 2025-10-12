@@ -16,16 +16,50 @@ body {
   color: #2e7d32;
 }
 
-/* Navbar */
-nav {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-nav .brand-logo {
-  font-weight: 500;
-  font-size: 1.5rem;
+/* Root variable for offset (calculated by JS) */
+:root {
+  --top-offset: 0px;
 }
 
-/* Tabs */
+/* Navbar style */
+nav {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  z-index: 1100;
+}
+
+/* Brand/logo */
+nav .brand-logo {
+  font-weight: 500;
+  font-size: 1.45rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Navbar fixed wrapper (Materialize already sets position:fixed) */
+.navbar-fixed {
+  z-index: 1099;
+}
+
+/* Tabs wrapper: fijo y con fondo (evita transparencias que dificulten lectura) */
+.tabs-wrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0; /* JS ajustará el top para dejarlo justo debajo del nav */
+  z-index: 1080;
+  background: #ffffff; /* blanco para contraste; puedes usar otro color */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+/* Alinea container dentro del tabs wrapper (igual que nav) */
+.tabs-wrapper .container {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+
+
+/* Tabs look */
 .tabs .tab a {
   color: #2e7d32;
   font-weight: 500;
@@ -39,6 +73,10 @@ nav .brand-logo {
   background-color: #2e7d32;
 }
 
+/* Card/containers tweaks */
+.card .card-content .card-title {
+  margin-bottom: 8px;
+}
 /* Cards generales */
 .card {
   border-radius: 12px;
@@ -96,6 +134,8 @@ nav .brand-logo {
   border-radius: 12px 12px 0 0;
 }
 
+
+
 /* Ajuste de columnas */
 @media (min-width: 600px) {
   .plant-card-wrapper {
@@ -118,6 +158,13 @@ nav .brand-logo {
 #prev-page i, #next-page i {
   vertical-align: middle;
 }
+
+.pagination-sticky .pagination-row {
+  display: block;          /* controla explícitamente, no depende del inline style viejo */
+  gap: 8px;
+  align-items: center;
+}
+
 
 /* Texto del botón traducido */
 #translation-note {
@@ -167,10 +214,6 @@ nav .brand-logo {
 }
 
 /* Empuja el contenido hacia abajo para no quedar tapado por las tabs fijas.
-   El valor real se establece por JS en la variable CSS --top-offset */
-.main-with-fixed-tabs {
-  padding-top: var(--top-offset, 120px);
-}
 
 /* Opcional - estilo de las tabs cuando fijadas */
 .tabs .tab a { color: #2e7d32; }
