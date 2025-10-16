@@ -40,50 +40,7 @@
     return Object.assign({}, item);
   };
 
-  // -------------------------
-  // Helper: determina base URL del backend
-  // - Usa HL.config.backendHost / backendPort si están configurados
-  // - Si backendHost vacío intenta heurísticas según entorno (Cordova/AVD/Genymotion)
-  // - Si devuelve null, el resto del código usará paths relativos (/api/...)
-  // -------------------------
-  function getBackendBase() {
-    const cfg = HL.config || {};
-    // Si backendHost explícito
-    if (cfg.backendHost && String(cfg.backendHost).trim() !== '') {
-      const hostRaw = String(cfg.backendHost).trim();
-      // Si ya incluye esquema http/https lo usamos tal cual
-      if (/^https?:\/\//i.test(hostRaw)) {
-        // Si incluyes puerto manualmente en backendHost, lo respetamos.
-        return hostRaw;
-      }
-      // Si backendUseHttps true o puerto 443 => https
-      const useHttps = !!cfg.backendUseHttps || (cfg.backendPort === 443);
-      const scheme = useHttps ? 'https' : 'http';
-      const portPart = (cfg.backendPort && cfg.backendPort !== 80 && cfg.backendPort !== 443) ? `:${cfg.backendPort}` : '';
-      return `${scheme}://${hostRaw}${portPart}`;
-    }
-
-    // heurísticas según ejecución (file:// = Cordova)
-    try {
-      if (typeof window !== 'undefined' && window.location && window.location.protocol === 'file:') {
-        // Android AVD
-        return `http://10.0.2.2:${cfg.backendPort || 3000}`;
-      }
-      const ua = (navigator && navigator.userAgent) ? navigator.userAgent : '';
-      if (/Genymotion/.test(ua)) return `http://10.0.3.2:${cfg.backendPort || 3000}`;
-      if (/Android/.test(ua) && /Emulator|Android SDK built for x86/.test(ua)) return `http://10.0.2.2:${cfg.backendPort || 3000}`;
-      if (/iPhone|iPad|iPod/.test(ua) && /Simulator/.test(ua)) return `http://localhost:${cfg.backendPort || 3000}`;
-    } catch (e) {
-      // ignore
-    }
-
-    // fallback: null -> usar rutas relativas '/api/...'
-    return null;
-  }
-
-  // -------------------------
-  // Preferencia DB-first (existente)
-  // -------------------------
+  // Helper: obtener preferencia DB-first desde HL.config o backend /api/config
   async function getDbFirstPreference() {
     try {
       if (typeof HL !== 'undefined' && HL.config) {
@@ -93,12 +50,16 @@
       }
     } catch (e) {}
 
+    // Si no está en HL.config, preguntar al backend (si se ha definido BACKEND_URL)
     try {
-      const res = await fetch('/api/config');
-      if (res && res.ok) {
-        const json = await res.json();
-        if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
-        if (typeof json.USE_DB_FIRST !== 'undefined') return !!json.USE_DB_FIRST;
+      const backend = (HL.config && HL.config.BACKEND_URL) ? HL.config.BACKEND_URL.replace(/\/+$/,'') : '';
+      if (backend) {
+        const res = await fetch(`${backend}/api/config`);
+        if (res && res.ok) {
+          const json = await res.json();
+          if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
+          if (typeof json.USE_DB_FIRST !== 'undefined') return !!json.USE_DB_FIRST;
+        }
       }
     } catch (e) {
       if (HL.config && HL.config.DEBUG_SHOW_RAW) console.warn('No se pudo obtener /api/config', e);
@@ -107,25 +68,25 @@
     return true;
   }
 
+  // fetchAllPlants rework para soportar DB-first o API-first y BACKEND_URL absoluto (útil en emulador)
   HL.api.fetchAllPlants = async function fetchAllPlants() {
     const cfg = HL.config || {};
     const perenUrl = `${cfg.API_BASE_URL || ''}?key=${encodeURIComponent(cfg.API_KEY_PERENUAL || '')}&page=1&per_page=100`;
     const trefleUrl = `${cfg.TREFLE_BASE || ''}/api/v1/species?token=${cfg.TREFLE_TOKEN || ''}&page=1&limit=100`;
 
+    const backendBase = (cfg.BACKEND_URL && String(cfg.BACKEND_URL).trim()) ? String(cfg.BACKEND_URL).replace(/\/+$/,'') : '';
     const preferDb = await getDbFirstPreference();
 
-    // -------- tryDb: usa URL absoluta si getBackendBase() devuelve algo ----------
     async function tryDb() {
+      // si hay BACKEND_URL usamos la URL absoluta; si no, intentamos la ruta relativa
+      const url = backendBase ? `${backendBase}/api/plants` : '/api/plants';
       try {
-        const backendBase = getBackendBase();
-        const url = backendBase ? `${backendBase.replace(/\/$/,'')}/api/plants` : '/api/plants';
-        if (cfg.DEBUG_SHOW_RAW) console.log('tryDb -> fetching', url);
         const resDb = await fetch(url);
         if (resDb && resDb.ok) {
           const dbData = await resDb.json();
           if (Array.isArray(dbData) && dbData.length > 0) return dbData;
         } else {
-          if (cfg.DEBUG_SHOW_RAW) console.warn('Backend /api/plants not ok', resDb && resDb.status, url);
+          if (cfg.DEBUG_SHOW_RAW) console.warn(`${url} responded not ok`, resDb && resDb.status);
         }
       } catch (e) {
         if (cfg.DEBUG_SHOW_RAW) console.warn('Fetch /api/plants failed', e);
@@ -205,6 +166,8 @@
     }
   };
 
-  // Enrichers and wikipedia helpers unchanged (keep existing code)...
+  // (El resto de funciones enrichers / wikipedia puedes dejar las que ya tengas)
+  // Si ya tienes implementadas HL.api.enrichPlantWithTrefle, enrichPlantWithPerenual, enrichPlantWithWikipedia
+  // en este mismo archivo, mantenlas igual.
 
 })(window.HerboLive);

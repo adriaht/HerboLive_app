@@ -8,15 +8,15 @@ window.HerboLive = window.HerboLive || {};
     // Depuración: true para mostrar logs adicionales
     DEBUG_SHOW_RAW: false,
 
-    // BACKEND / API propio (backend Node + nginx reverse-proxy)
-    // Usar la URL pública donde esté alojado el frontend/backend.
-    // IMPORTANTE: usa HTTPS si la app se ejecuta en Android >= 9 (cleartext restrictions).
-    BACKEND_BASE: "https://ahernandeztorredemer.ieti.site",
+    // BACKEND (tu servidor público con nginx que hace proxy a Node)
+    // Usa https si tu dominio tiene SSL (Cloudflare/Let's Encrypt)
+    BACKEND_URL: "https://ahernandeztorredemer.ieti.site",
 
-    // URLs de la API externa (si las usas)
+    // Trefle API (si usas Trefle)
     TREFLE_TOKEN: "usr-ijZevpsl8nyZp0aOPf46CnKpLwSvtvgg1yeCo4QTPU0",
     TREFLE_BASE: "https://trefle.io",
 
+    // Perenual API (si usas Perenual)
     API_KEY_PERENUAL: "sk-mFfk68e59df7d26cd12759",
     API_BASE_URL: "https://perenual.com/api/species-list",
 
@@ -24,24 +24,15 @@ window.HerboLive = window.HerboLive || {};
     PAGE_SIZE: 12,
     CSV_MAX_READ: 52,
 
-    // --- MODO DE BÚSQUEDA ---
-    // true = primero intenta el backend propio (/api/plants),
-    // false = intenta Trefle/Perenual primero.
+    // MODO DE BÚSQUEDA: true = DB-first; false = API-first
+    // Cuando useDbFirst=true el frontend pedirá primero al BACKEND /api/plants
     useDbFirst: true,
 
-    // Compatibilidad (mayúsculas para módulos antiguos)
+    // Compatibilidad (mayúsculas)
     USE_DB_FIRST: true,
-    USE_BACKEND: true,
-
-    // ENDPOINTS (derivados, no los cambies a menos que tengas que)
-    // Nota: el frontend usa fetch('/api/plants') en código; si sirves
-    // la app desde el mismo dominio que el backend (nginx) la ruta relativa funciona.
-    // Si sirves el front desde otro dominio, la app llamará a BACKEND_BASE + '/api/plants'
-    apiPlantsPath: '/api/plants',
-    backendBaseUrl: "https://ahernandeztorredemer.ieti.site"
+    USE_BACKEND: true
   };
 
-  // Estado de la aplicación
   HL.state = {
     plants: [],
     searchResults: [],
@@ -53,13 +44,4 @@ window.HerboLive = window.HerboLive || {};
     currentPageSearch: 1,
     pendingSearchQuery: null
   };
-
-  // Helper para construir URLs de backend (usa BACKEND_BASE si es absoluto)
-  HL.config.buildBackendUrl = function(path) {
-    if (!path) return HL.config.backendBaseUrl;
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    const base = HL.config.backendBaseUrl.replace(/\/+$/, '');
-    return base + (path.startsWith('/') ? path : ('/' + path));
-  };
-
 })(window.HerboLive);
