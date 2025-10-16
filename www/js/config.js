@@ -8,9 +8,11 @@ window.HerboLive = window.HerboLive || {};
     // Depuración: true para mostrar logs adicionales
     DEBUG_SHOW_RAW: false,
 
-    // BACKEND (tu servidor público con nginx que hace proxy a Node)
-    // Usa https si tu dominio tiene SSL (Cloudflare/Let's Encrypt)
-    BACKEND_URL: "https://ahernandeztorredemer.ieti.site",
+    // BACKEND público (usa https para producción)
+    BACKEND_URL: "https://ahernandeztorredemer.ieti.site", // <--- usa HTTPS
+
+    // Ruta base para llamadas a APIs (se usará como BACKEND_URL + '/api')
+    API_BASE: "/api",
 
     // Trefle API (si usas Trefle)
     TREFLE_TOKEN: "usr-ijZevpsl8nyZp0aOPf46CnKpLwSvtvgg1yeCo4QTPU0",
@@ -25,7 +27,6 @@ window.HerboLive = window.HerboLive || {};
     CSV_MAX_READ: 52,
 
     // MODO DE BÚSQUEDA: true = DB-first; false = API-first
-    // Cuando useDbFirst=true el frontend pedirá primero al BACKEND /api/plants
     useDbFirst: true,
 
     // Compatibilidad (mayúsculas)

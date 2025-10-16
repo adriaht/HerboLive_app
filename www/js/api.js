@@ -1,6 +1,24 @@
-// js/api.js
+// js/api.js 
 (function(HL){
   HL.api = HL.api || {};
+
+  // Helper: construir URL absoluta hacia el backend público
+  function apiUrl(path) {
+    const cfg = (window.HerboLive && window.HerboLive.config) ? window.HerboLive.config : {};
+    const base = (cfg.BACKEND_URL ? cfg.BACKEND_URL.replace(/\/+$/,'') : '') || '';
+    const apiBase = (cfg.API_BASE || '/api').replace(/\/+$/,''); // '/api'
+    if (!path) return base + apiBase;
+    // si el path es absoluto HTTP ya devuélvelo
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    // si empieza por /api o /, mantenemos la estructura
+    if (path.startsWith('/')) {
+      if (path.startsWith('/api/')) return base + path;       // /api/foo -> https://host/api/foo
+      // si path es '/plants' y queremos /api/plants
+      return base + apiBase + path;
+    }
+    // path sin slash: 'plants' -> https://host/api/plants
+    return base + apiBase + '/' + path;
+  }
 
   // Normaliza datos de API (Perenual/Trefle) al esquema tipo-CSV usado por la app
   HL.api.normalizeApiToCsvFields = function normalizeApiToCsvFields(item, source) {
@@ -40,7 +58,6 @@
     return Object.assign({}, item);
   };
 
-  // Helper: obtener preferencia DB-first desde HL.config o backend /api/config
   async function getDbFirstPreference() {
     try {
       if (typeof HL !== 'undefined' && HL.config) {
@@ -50,16 +67,12 @@
       }
     } catch (e) {}
 
-    // Si no está en HL.config, preguntar al backend (si se ha definido BACKEND_URL)
     try {
-      const backend = (HL.config && HL.config.BACKEND_URL) ? HL.config.BACKEND_URL.replace(/\/+$/,'') : '';
-      if (backend) {
-        const res = await fetch(`${backend}/api/config`);
-        if (res && res.ok) {
-          const json = await res.json();
-          if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
-          if (typeof json.USE_DB_FIRST !== 'undefined') return !!json.USE_DB_FIRST;
-        }
+      const res = await fetch(apiUrl('/config'));
+      if (res && res.ok) {
+        const json = await res.json();
+        if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
+        if (typeof json.USE_DB_FIRST !== 'undefined') return !!json.USE_DB_FIRST;
       }
     } catch (e) {
       if (HL.config && HL.config.DEBUG_SHOW_RAW) console.warn('No se pudo obtener /api/config', e);
@@ -68,25 +81,22 @@
     return true;
   }
 
-  // fetchAllPlants rework para soportar DB-first o API-first y BACKEND_URL absoluto (útil en emulador)
   HL.api.fetchAllPlants = async function fetchAllPlants() {
     const cfg = HL.config || {};
     const perenUrl = `${cfg.API_BASE_URL || ''}?key=${encodeURIComponent(cfg.API_KEY_PERENUAL || '')}&page=1&per_page=100`;
     const trefleUrl = `${cfg.TREFLE_BASE || ''}/api/v1/species?token=${cfg.TREFLE_TOKEN || ''}&page=1&limit=100`;
 
-    const backendBase = (cfg.BACKEND_URL && String(cfg.BACKEND_URL).trim()) ? String(cfg.BACKEND_URL).replace(/\/+$/,'') : '';
     const preferDb = await getDbFirstPreference();
 
     async function tryDb() {
-      // si hay BACKEND_URL usamos la URL absoluta; si no, intentamos la ruta relativa
-      const url = backendBase ? `${backendBase}/api/plants` : '/api/plants';
       try {
-        const resDb = await fetch(url);
+        // ahora usa URL absoluta al backend
+        const resDb = await fetch(apiUrl('/plants'));
         if (resDb && resDb.ok) {
           const dbData = await resDb.json();
           if (Array.isArray(dbData) && dbData.length > 0) return dbData;
         } else {
-          if (cfg.DEBUG_SHOW_RAW) console.warn(`${url} responded not ok`, resDb && resDb.status);
+          if (cfg.DEBUG_SHOW_RAW) console.warn('tryDb: respuesta no OK', resDb && resDb.status);
         }
       } catch (e) {
         if (cfg.DEBUG_SHOW_RAW) console.warn('Fetch /api/plants failed', e);
@@ -123,6 +133,7 @@
 
     async function tryCsvLocal() {
       try {
+        // El CSV local se sirve por el frontend (ruta relativa a la app)
         const csvRes = await fetch('data/plant_data.csv');
         if (csvRes && csvRes.ok) {
           const text = await csvRes.text();
@@ -166,8 +177,6 @@
     }
   };
 
-  // (El resto de funciones enrichers / wikipedia puedes dejar las que ya tengas)
-  // Si ya tienes implementadas HL.api.enrichPlantWithTrefle, enrichPlantWithPerenual, enrichPlantWithWikipedia
-  // en este mismo archivo, mantenlas igual.
+  // (si ya tienes enrichers / wikipedia helpers, mantenlos aquí)
 
 })(window.HerboLive);
