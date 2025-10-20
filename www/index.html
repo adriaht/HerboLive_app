@@ -78,7 +78,7 @@
         <button id="prev-page-search" class="btn-flat green-text" title="Página anterior">
           <i class="material-icons left">chevron_left</i>
         </button>
-        <span id="current-page-search" style="margin: 0 10px;">Página 1</span>
+       <span id="current-page-search" style="margin: 0 10px;">Página 1</span>
         <button id="next-page-search" class="btn-flat green-text" title="Página siguiente">
           <i class="material-icons right">chevron_right</i>
         </button>
@@ -90,13 +90,7 @@
       <div id="plants-container" class="row" style="min-height:220px;"></div>
 
       <div id="pagination-all" class="center-align" style="display:none; margin-top:12px; position: sticky; bottom: 0; background: rgba(250,250,250,0.95); padding:8px 0; z-index:10;">
-        <button id="prev-page-all" class="btn-flat green-text" title="Página anterior">
-          <i class="material-icons left">chevron_left</i>
-        </button>
-        <span id="current-page-all" style="margin: 0 10px;">Página 1</span>
-        <button id="next-page-all" class="btn-flat green-text" title="Página siguiente">
-          <i class="material-icons right">chevron_right</i>
-        </button>
+        <!-- dinámico: contenido generado por JS -->
       </div>
     </div>
   </div>
@@ -143,7 +137,17 @@
 
   <!-- API / carga / renderizado -->
   <script src="js/api.js" defer></script>
+
+  <!-- localforage para cache persistente (IndexedDB) -->
+  <script src="https://unpkg.com/localforage/dist/localforage.min.js" defer></script>
+
+  <!-- Nuevos módulos: cache & prefetch (deben cargarse antes de loader.js) -->
+  <script src="js/cache.js" defer></script>
+  <script src="js/prefetch.js" defer></script>
+
+  <!-- Loader ahora usa cache/prefetch -->
   <script src="js/loader.js" defer></script>
+
   <script src="js/render.js" defer></script>
 
   <!-- UI / modal / búsqueda / debug -->

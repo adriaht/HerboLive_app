@@ -1,4 +1,11 @@
-// js/render.js
+/* Cambios realizados:
+ - renderListPage se mantiene para uso con arrays locales (search).
+ - renderAllPlantsPage ahora funciona en modo "server/paged": solicita páginas desde HL.cache/HL.prefetch,
+   muestra spinner si la página no está lista/enriquecida y actualiza la UI cuando esté disponible.
+ - Añadido paginador dinámico: muestra una ventana de hasta 5 páginas centrada en la página actual.
+ - No se tocaron funciones de búsqueda ni modal. Mantengo tu HTML de tarjetas intacto.
+*/
+
 (function(HL){
   HL.render = HL.render || {};
 
@@ -18,7 +25,7 @@
     return out;
   };
 
-  // render genérico
+  // render genérico (para arrays ya disponibles — usado por search)
   HL.render.renderListPage = function renderListPage({ containerId, source, page, setPageFn, pageLabelId, paginationId }) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -63,7 +70,7 @@
       container.appendChild(cardWrapper);
     });
 
-    // paginador del contenedor
+    // paginador del contenedor (este método recibe totalPages, pero en modo server no lo usamos)
     const pag = document.getElementById(paginationId);
     if (pag) {
       if (totalPages > 1) {
@@ -76,15 +83,148 @@
     }
   };
 
-  HL.render.renderAllPlantsPage = function renderAllPlantsPage(page) {
-    HL.render.renderListPage({
-      containerId: 'plants-container',
-      source: HL.state.plants,
-      page,
-      setPageFn: p => { HL.state.currentPageAll = p; },
-      pageLabelId: 'current-page-all',
-      paginationId: 'pagination-all'
+  // helper: render page items array into plants-container (reuse card creation)
+  function renderItemsArrayIntoContainer(container, items) {
+    container.innerHTML = '';
+    if (!items || items.length === 0) {
+      container.innerHTML = `<p class="grey-text center-align" style="padding:20px">No hay plantas disponibles.</p>`;
+      return;
+    }
+    items.forEach(plant => {
+      const cardWrapper = document.createElement('div');
+      cardWrapper.className = 'plant-card-wrapper col s12 m6 l4';
+      const card = document.createElement('div');
+      card.className = 'card plant-card z-depth-2';
+
+      const imgUrl = plant.image_url || (plant.images && plant.images[0]) || (plant.perenual && (plant.perenual.image_url || (plant.perenual.images && plant.perenual.images[0]))) || (plant.trefle && (plant.trefle.image_url || (plant.trefle.images && plant.trefle.images[0]))) || 'img/logo.png';
+      const title = plant.common_name || plant.common_name_display || plant.scientific_name || 'Nombre desconocido';
+
+      card.innerHTML = `
+        <div class="card-image" style="padding:10px; display:flex; align-items:center; justify-content:center; height:160px; background:#fafafa;">
+          <img src="${HL.utils.escapeHtml(imgUrl)}" alt="${HL.utils.escapeHtml(title)}" onerror="this.src='img/logo.png'" style="max-height:140px; width:auto;">
+        </div>
+        <div class="card-content" style="height:200px; overflow:hidden;">
+          <span class="card-title">${HL.utils.escapeHtml(title)}</span>
+          <p>${HL.utils.escapeHtml(plant.description ? HL.utils.truncateText(plant.description, 140) : 'No hay descripción disponible.')}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => HL.modal.openPlantModal(plant));
+      cardWrapper.appendChild(card);
+      container.appendChild(cardWrapper);
     });
+  }
+
+  // Render dinámico para "Todas" usando páginas cacheadas (server-side / paged)
+  HL.render.renderAllPlantsPage = async function renderAllPlantsPage(page) {
+    // sanitize page
+    page = Number(page) || 1;
+    HL.state.currentPageAll = page;
+
+    const container = document.getElementById('plants-container');
+    if (!container) return;
+
+    // check if page is available in cache
+    const cached = await (HL.cache && HL.cache.getPage ? HL.cache.getPage(page) : null);
+    const enriching = (HL.state.enrichingPages && HL.state.enrichingPages.has(page));
+    const loadingUi = (!cached || cached.length === 0) || enriching;
+
+    if (loadingUi) {
+      // show loader in container (reuse loader)
+      HL.loader.showLoadingForContainer('plants-container', `Cargando página ${page}...`);
+      try {
+        // fetch and (by default) enrich page then re-render
+        await HL.prefetch.fetchPageImmediate(page, { enrich: true });
+        const nowItems = await (HL.cache && HL.cache.getPage ? HL.cache.getPage(page) : null);
+        if (nowItems && nowItems.length) {
+          renderItemsArrayIntoContainer(container, nowItems);
+        } else {
+          HL.loader.showErrorForContainer('plants-container', 'No hay datos en esta página.');
+        }
+      } catch (e) {
+        HL.loader.showErrorForContainer('plants-container', 'Error al cargar la página. Intenta más tarde.');
+        console.error('renderAllPlantsPage fetch error', e);
+      }
+    } else {
+      // page is cached and (likely) enriched -> render immediately
+      renderItemsArrayIntoContainer(container, cached);
+    }
+
+    // update pagination UI (dynamic window of numbered pages)
+    const pag = document.getElementById('pagination-all');
+    if (!pag) return;
+
+    // build visible numbered pages window (5 buttons centered around current page when possible)
+    const windowSize = 5;
+    let start = Math.max(1, page - Math.floor(windowSize/2));
+    let end = start + windowSize - 1;
+
+    // ensure start=1 if page small
+    if (start === 1) end = Math.max(windowSize, end);
+
+    // ensure end not less than start
+    if (end < start) end = start;
+
+    // If we don't have many cached pages yet, expand end to include initial pages
+    const loadedPagesArr = Array.from(HL.state.loadedPages || new Set()).map(Number).sort((a,b)=>a-b);
+    const highestLoaded = loadedPagesArr.length ? loadedPagesArr[loadedPagesArr.length - 1] : Math.max(page, start);
+    // ensure end at least page (so user can move forward)
+    if (end < page) end = page;
+    // allow end to grow up to highestLoaded or page+2
+    end = Math.max(end, Math.min(highestLoaded, page + 2));
+
+    // Build buttons
+    pag.innerHTML = ''; // clear
+    const prevBtn = document.createElement('button');
+    prevBtn.id = 'prev-page-all';
+    prevBtn.className = 'btn-flat green-text';
+    prevBtn.title = 'Página anterior';
+    prevBtn.innerHTML = `<i class="material-icons left">chevron_left</i>`;
+    prevBtn.disabled = (page <= 1);
+    prevBtn.addEventListener('click', () => {
+      HL.render.changePage('all', page - 1);
+    });
+
+    const nextBtn = document.createElement('button');
+    nextBtn.id = 'next-page-all';
+    nextBtn.className = 'btn-flat green-text';
+    nextBtn.title = 'Página siguiente';
+    nextBtn.innerHTML = `<i class="material-icons right">chevron_right</i>`;
+    nextBtn.addEventListener('click', () => {
+      HL.render.changePage('all', page + 1);
+    });
+
+    const pageSpan = document.createElement('span');
+    pageSpan.id = 'current-page-all';
+    pageSpan.style.margin = '0 10px';
+    pageSpan.textContent = `Página ${page}`;
+
+    pag.style.display = 'flex';
+    pag.style.alignItems = 'center';
+
+    pag.appendChild(prevBtn);
+    // numbered pages
+    for (let p = start; p <= end; p++) {
+      const nb = document.createElement('button');
+      nb.className = 'btn-flat';
+      if (p === page) {
+        nb.className += ' green darken-2 white-text';
+      } else {
+        nb.className += ' green-text';
+      }
+      nb.style.margin = '0 4px';
+      nb.textContent = p;
+      nb.addEventListener('click', () => HL.render.changePage('all', p));
+      pag.appendChild(nb);
+    }
+    pag.appendChild(pageSpan);
+    pag.appendChild(nextBtn);
+
+    // finally, tell prefetch to maintain window around this page
+    if (HL.prefetch && typeof HL.prefetch.scheduleAround === 'function' && HL.config.PREFETCH_ENABLED) {
+      HL.prefetch.scheduleAround(page);
+    }
+
+    HL.utils.scrollToTop();
   };
 
   HL.render.renderSearchPlantsPage = function renderSearchPlantsPage(page) {
@@ -106,9 +246,8 @@
       HL.state.currentPageSearch = page;
       HL.render.renderSearchPlantsPage(page);
     } else {
-      const source = HL.state.plants;
-      const totalPages = Math.max(1, Math.ceil((source && source.length) ? source.length / HL.config.PAGE_SIZE : 1));
-      if (page < 1 || page > totalPages) return;
+      // server-paged mode: allow any page >=1
+      if (page < 1) return;
       HL.state.currentPageAll = page;
       HL.render.renderAllPlantsPage(page);
     }

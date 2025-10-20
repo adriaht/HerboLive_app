@@ -1,4 +1,14 @@
-// js/loader.js
+/* Cambios realizados:
+ - En lugar de llamar HL.api.fetchAllPlants() que devolvía todo, hacemos:
+   1) Pedir páginas 1..INITIAL_PAGES vía HL.api.fetchPlantsPage
+   2) Guardarlas en HL.cache (IndexedDB) y en memoria
+   3) Enriquecer al menos las 2 primeras páginas antes de renderizar (según tu petición)
+   4) Renderizar la página actual (1) y dejar prefetch en background para el resto
+ - Si el usuario solicita una página que no está en cache o no ha sido enriquecida,
+   el render mostrará el loader y llamará a HL.prefetch.fetchPageImmediate.
+ - No eliminé tu lógica de enrich previa; la moví a HL.prefetch.enrichPage para control.
+*/
+
 (function(HL){
   HL.loader = HL.loader || {};
 
@@ -27,7 +37,7 @@
     if (pag) pag.style.display = 'none';
   };
 
-  // Start background load (uses HL.api.fetchAllPlants and enrichers)
+  // Start background load (uses HL.api.fetchPlantsPage and HL.prefetch.enrichPage)
   HL.loader.startBackgroundLoad = function startBackgroundLoad() {
     if (HL.state.plantsPromise) return HL.state.plantsPromise;
     HL.state.loadingPlants = true;
@@ -35,81 +45,62 @@
 
     HL.state.plantsPromise = (async () => {
       try {
-        const list = await HL.api.fetchAllPlants();
-        if (!Array.isArray(list)) throw new Error('La fuente no devolvió un array de plantas.');
+        // ensure cache & prefetch modules initialized
+        if (typeof HL.cache !== 'undefined' && typeof HL.cache.init === 'function') await HL.cache.init();
+        // compute first batch: pages 1..INITIAL_PAGES
+        const perPage = (HL.config && HL.config.PAGE_SIZE) || 6;
+        const initialPages = (HL.config && HL.config.INITIAL_PAGES) || 5;
 
-        const enriched = [];
-        for (let i = 0; i < list.length; i++) {
-          let plant = Object.assign({}, list[i]);
-
+        const fetchedPages = [];
+        for (let p = 1; p <= initialPages; p++) {
           try {
-            const tref = await HL.api.enrichPlantWithTrefle(plant);
-            if (tref) plant = HL.utils.merge ? HL.utils.merge(plant, tref) : HL.mergePlantData(plant, tref, 'trefle');
-          } catch (e) { if (HL.config.DEBUG_SHOW_RAW) console.warn('Trefle enrich error', e); }
-
-          const needDesc = !plant.description || String(plant.description).trim() === '';
-          const needImg = !plant.image_url && !plant.image && !(plant.images && plant.images.length);
-          if (needDesc || needImg) {
-            try {
-              const wiki = await HL.api.enrichPlantWithWikipedia(plant);
-              if (wiki) plant = HL.mergePlantData(plant, wiki, 'wiki');
-            } catch (e) { if (HL.config.DEBUG_SHOW_RAW) console.warn('Wikipedia error', e); }
-          }
-
-          if (!plant.images || !Array.isArray(plant.images)) {
-            const maybe = plant.image_url || plant.image;
-            if (maybe) plant.images = [maybe];
-          }
-
-          enriched.push(plant);
-        }
-
-        // Dedupe
-        const seen = new Set();
-        const unique = [];
-        const duplicatesList = [];
-
-        function buildDedupKey(p) {
-          const sci = (p.scientific_name || p.scientific || '').toString().toLowerCase().trim();
-          const com = (p.common_name || p.common || '').toString().toLowerCase().trim();
-          const img = (p.image_url || (p.images && p.images[0]) || '').toString().toLowerCase().trim();
-          const desc = (p.description || p.extract || '').toString().toLowerCase().trim().slice(0, 120);
-          return `${sci}||${com}||${img}||${desc}`;
-        }
-
-        for (const p of enriched) {
-          const key = buildDedupKey(p);
-          if (!key || key === '||||') {
-            const fallback = JSON.stringify(p).slice(0, 100);
-            if (seen.has(fallback)) { duplicatesList.push(fallback); continue; }
-            seen.add(fallback);
-            unique.push(p);
-          } else {
-            if (seen.has(key)) { duplicatesList.push(key); continue; }
-            seen.add(key);
-            unique.push(p);
+            // fetch page via HL.api.fetchPlantsPage
+            const pageItems = await HL.api.fetchPlantsPage(p, perPage);
+            const arr = Array.isArray(pageItems) ? pageItems : [];
+            // store in cache & state
+            await (HL.cache && HL.cache.setPage ? HL.cache.setPage(p, arr) : Promise.resolve());
+            HL.state.pages = HL.state.pages || {};
+            HL.state.pages[p] = arr;
+            HL.state.loadedPages.add(p);
+            fetchedPages.push(p);
+            if (HL.config && HL.config.DEBUG_SHOW_RAW) console.log(`Loader: page ${p} fetched, items=${arr.length}`);
+          } catch (e) {
+            console.warn('Error fetching initial page', p, e);
           }
         }
 
-        if (HL.config.DEBUG_SHOW_RAW && duplicatesList.length > 0) {
-          console.log(`Se han eliminado ${duplicatesList.length} duplicados (claves):`, duplicatesList.slice(0,50));
-        }
+        // Enrich at least first 2 pages before showing (según tu petición)
+        const pagesToEnrichNow = [];
+        for (let p = 1; p <= Math.min(2, initialPages); p++) pagesToEnrichNow.push(p);
 
-        HL.state.plants = unique;
-        HL.state.allPlantsLoaded = true;
+        // enrich concurrently but controlled via HL.prefetch.enrichPage
+        const enrichPromises = pagesToEnrichNow.map(p => {
+          try {
+            return HL.prefetch && typeof HL.prefetch.enrichPage === 'function' ? HL.prefetch.enrichPage(p) : Promise.resolve();
+          } catch (e) { return Promise.resolve(); }
+        });
+        await Promise.all(enrichPromises);
+
+        // finished initial load: mark states
+        HL.state.allPlantsLoaded = false; // still not full catalog
         HL.state.loadingPlants = false;
 
-        // render "Todas"
-        HL.render.renderAllPlantsPage(HL.state.currentPageAll);
+        // set current page default 1 and render it
+        HL.render.renderAllPlantsPage(HL.state.currentPageAll || 1);
 
-        // si había búsqueda pendiente
+        // start prefetch background (maintain window around current page)
+        if (HL.config.PREFETCH_ENABLED && HL.prefetch && typeof HL.prefetch.start === 'function') {
+          HL.prefetch.start(HL.state.currentPageAll || 1);
+        }
+
+        // attach pending search handler if needed
         if (HL.state.pendingSearchQuery) {
           const q = HL.state.pendingSearchQuery;
           HL.state.pendingSearchQuery = null;
           HL.search.performSearchAndRender(q, q);
         }
 
-        return HL.state.plants;
+        return HL.state.pages;
       } catch (err) {
         HL.state.loadingPlants = false;
         HL.state.allPlantsLoaded = false;

@@ -1,4 +1,11 @@
-// www/js/api.js (modificada: safe merge + usa proxy)
+/* Cambios realizados:
+ - Añadidas funciones para pedir páginas al backend:
+    - HL.api.fetchPlantsPage(page, perPage)
+    - HL.api.fetchPlantsRange(limit, page)  (fallback sencillo)
+ - Las funciones existentes (fetchAllPlants) se mantienen para compatibilidad.
+ - Las nuevas funciones intentan usar /api/plants?page=&perPage= y caen a ?limit= si hace falta.
+*/
+
 (function(HL){
   HL.api = HL.api || {};
 
@@ -88,6 +95,60 @@
     return true;
   }
 
+  // ---- Nuevo: fetch por página ----
+  HL.api.fetchPlantsPage = async function(page = 1, perPage = (HL.config && HL.config.PAGE_SIZE) || 6) {
+    const cfg = HL.config || {};
+    const preferDb = await getDbFirstPreference().catch(()=>true);
+
+    // try page/perPage first
+    try {
+      const url = apiUrl(`/plants?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`);
+      const res = await fetch(url);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (Array.isArray(json)) return json;
+      }
+    } catch (e) {
+      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage page/perPage failed', e);
+    }
+
+    // fallback: some backends accept limit (we ask limit=perPage and hope server handles page via query)
+    try {
+      const url2 = apiUrl(`/plants?limit=${encodeURIComponent(perPage)}&page=${encodeURIComponent(page)}`);
+      const r2 = await fetch(url2);
+      if (r2 && r2.ok) {
+        const j2 = await r2.json();
+        if (Array.isArray(j2)) return j2;
+      }
+    } catch (e) {
+      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage fallback failed', e);
+    }
+
+    // last resort: ask first N and slice client-side (not ideal but safe)
+    try {
+      const url3 = apiUrl(`/plants?limit=${encodeURIComponent(perPage * page)}`);
+      const r3 = await fetch(url3);
+      if (r3 && r3.ok) {
+        const j3 = await r3.json();
+        if (Array.isArray(j3)) {
+          const start = (page - 1) * perPage;
+          return j3.slice(start, start + perPage);
+        }
+      }
+    } catch (e) {
+      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage last-resort failed', e);
+    }
+
+    // give up
+    return [];
+  };
+
+  HL.api.fetchPlantsRange = async function(limit = 30, page = 1) {
+    // convenience wrapper: page*limit first attempt via page/perPage
+    return HL.api.fetchPlantsPage(page, limit);
+  };
+
+  // ---- Mantener fetchAllPlants por compatibilidad ----
   HL.api.fetchAllPlants = async function() {
     const cfg = HL.config || {};
     const preferDb = await getDbFirstPreference();
@@ -145,7 +206,6 @@
       return null;
     }
 
-    // orden de preferencia: DB -> Perenual -> Trefle
     if (preferDb) {
       const dbRes = await tryDb();
       if (Array.isArray(dbRes) && dbRes.length) return mergePlantsByKey(dbRes);
