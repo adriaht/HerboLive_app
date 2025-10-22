@@ -10,6 +10,15 @@ window.HerboLive = window.HerboLive || {};
 
 (function(HL){
   HL.config = {
+    
+
+    // URL pública donde el backend Node está proxyada por Apache
+    BACKEND_URL: '/herboLive',
+
+    // prefijo de la API (normalmente /api)
+    API_BASE: '/api',
+
+
     DEBUG_SHOW_RAW: false, // cambiar aquí para depuración
 
     // Tokens sensibles borrados del frontend por seguridad.
