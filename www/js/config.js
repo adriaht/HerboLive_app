@@ -3,7 +3,7 @@
  - Añadidos parámetros de prefetch: INITIAL_PAGES, PREFETCH_ENABLED, PREFETCH_CONCURRENCY,
    ENRICH_CONCURRENCY, PREFETCH_PAGES_AHEAD, PREFETCH_PAGES_BEHIND, MAX_PREFETCH_PAGES_WINDOW.
  - PAUSE_PREFETCH_ON_SEARCH: pausa prefetch si el usuario está en la pestaña de búsqueda.
- - No se ha eliminado ninguna configuración previa; solo se han añadido opciones.
+ - Tokens sensibles (TREFLE, PERENUAL) **eliminados** del frontend: se deben mantener en .env.
 */
 
 window.HerboLive = window.HerboLive || {};
@@ -11,10 +11,17 @@ window.HerboLive = window.HerboLive || {};
 (function(HL){
   HL.config = {
     DEBUG_SHOW_RAW: false, // cambiar aquí para depuración
-    TREFLE_TOKEN: "usr-ijZevpsl8nyZp0aOPf46CnKpLwSvtvgg1yeCo4QTPU0",
+
+    // Tokens sensibles borrados del frontend por seguridad.
+    // TREFLE_TOKEN: "<REMOVED>",
+    // API_KEY_PERENUAL: "<REMOVED>",
+
     TREFLE_BASE: "https://trefle.io",
-    API_KEY_PERENUAL: "sk-mFfk68e59df7d26cd12759",
     API_BASE_URL: "https://perenual.com/api/species-list",
+
+    // Si tu app está servida en un subdirectorio (p.ej. /herboLive) y quieres forzarlo:
+    // BACKEND_URL: '/herboLive', // descomentar si la app está en /herboLive
+    // API_BASE: '/api', // normalmente no hace falta tocar
 
     // Pagination / prefetch config (nuevos)
     PAGE_SIZE: 6,               // ahora 6 por página

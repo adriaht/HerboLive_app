@@ -1,27 +1,106 @@
-/* Cambios realizados:
- - Añadidas funciones para pedir páginas al backend:
-    - HL.api.fetchPlantsPage(page, perPage)
-    - HL.api.fetchPlantsRange(limit, page)  (fallback sencillo)
- - Las funciones existentes (fetchAllPlants) se mantienen para compatibilidad.
- - Las nuevas funciones intentan usar /api/plants?page=&perPage= y caen a ?limit= si hace falta.
-*/
-
+// www/js/api.js (modificada: safe merge + usa proxy + logging + fallback de subpath)
 (function(HL){
   HL.api = HL.api || {};
 
-  function apiUrl(path) {
-    const cfg = HL.config || {};
-    const base = (cfg.BACKEND_URL ? cfg.BACKEND_URL.replace(/\/+$/,'') : '') || '';
-    const apiBase = (cfg.API_BASE || '/api').replace(/\/+$/,'');
-    if (!path) return base + apiBase;
-    if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    if (path.startsWith('/')) {
-      if (path.startsWith('/api/')) return base + path;
-      return base + apiBase + path;
-    }
-    return base + apiBase + '/' + path;
+  // --- debug / configuración visible ---
+  console.debug('[HL.api] initializing api module, HL.config snapshot:', (HL.config || {}));
+
+  function ensureSlash(s) {
+    if (!s) return '';
+    return s.replace(/\/+$/,'');
   }
 
+  function apiUrl(path) {
+    const cfg = HL.config || {};
+    const base = (cfg.BACKEND_URL ? ensureSlash(cfg.BACKEND_URL) : '') || '';
+    const apiBaseCfg = (cfg.API_BASE || '/api').replace(/\/+$/,'');
+    const apiBase = apiBaseCfg.startsWith('/') ? apiBaseCfg : '/' + apiBaseCfg;
+    // Normalización de path
+    let p = path || '';
+    if (p === '') {
+      const full = base + apiBase;
+      console.debug('[HL.api.apiUrl] computed (no path) ->', full);
+      return full;
+    }
+    if (p.startsWith('http://') || p.startsWith('https://')) {
+      console.debug('[HL.api.apiUrl] path is absolute url ->', p);
+      return p;
+    }
+    if (p.startsWith('/')) {
+      // if path starts with /api/ allow using base as prefix if user set BACKEND_URL
+      if (p.startsWith('/api/')) {
+        const full = base + p;
+        console.debug('[HL.api.apiUrl] computed (absolute /api path) ->', full);
+        return full;
+      }
+      const full = base + apiBase + p;
+      console.debug('[HL.api.apiUrl] computed (absolute path) ->', full);
+      return full;
+    }
+    const full = base + apiBase + '/' + p;
+    console.debug('[HL.api.apiUrl] computed (relative path) ->', full);
+    return full;
+  }
+
+  // Helper: construir alternativa basada en primer segmento de la ruta actual (p.ej. /herboLive)
+  function detectAppBaseFromLocation() {
+    try {
+      const parts = (window.location && window.location.pathname) ? window.location.pathname.split('/').filter(Boolean) : [];
+      if (parts.length > 0) {
+        return '/' + parts[0];
+      }
+    } catch (e) {}
+    return '';
+  }
+
+  // fetch con fallback: si 404, intentará una vez con prefijo (p.ej. /herboLive)
+  async function fetchWithFallback(url, opts = {}) {
+    const debugPrefix = '[HL.api.fetchWithFallback]';
+    console.debug(`${debugPrefix} attempting fetch ->`, url, opts);
+    let triedAlt = !!opts._triedAlt;
+    try {
+      const resp = await fetch(url, opts);
+      console.debug(`${debugPrefix} response for ${url}: status=${resp && resp.status}`);
+      if (resp && resp.status === 404 && !triedAlt) {
+        // intentar fallback
+        const firstSeg = detectAppBaseFromLocation();
+        if (firstSeg) {
+          const apiBase = (HL.config && (HL.config.API_BASE || '/api')) || '/api';
+          const altUrl = ensureSlash(firstSeg) + apiBase + (url.indexOf(apiBase) !== -1 ? url.split(apiBase).pop() : url);
+          console.warn(`${debugPrefix} got 404 for ${url} -> trying fallback ${altUrl}`);
+          // mark tried to avoid recursion
+          const newOpts = Object.assign({}, opts, { _triedAlt: true });
+          triedAlt = true;
+          const resp2 = await fetch(altUrl, newOpts);
+          console.debug(`${debugPrefix} fallback response for ${altUrl}: status=${resp2 && resp2.status}`);
+          return { resp: resp2, usedAlt: true, altUrl };
+        }
+      }
+      return { resp, usedAlt: false, altUrl: null };
+    } catch (err) {
+      console.warn(`${debugPrefix} fetch error for ${url}:`, err && err.message ? err.message : err);
+      // if there's a fallback and not tried, attempt it as well
+      if (!triedAlt) {
+        const firstSeg = detectAppBaseFromLocation();
+        if (firstSeg) {
+          const apiBase = (HL.config && (HL.config.API_BASE || '/api')) || '/api';
+          const altUrl = ensureSlash(firstSeg) + apiBase + (url.indexOf(apiBase) !== -1 ? url.split(apiBase).pop() : url);
+          console.warn(`${debugPrefix} network failed for ${url}, trying fallback ${altUrl}`);
+          try {
+            const resp2 = await fetch(altUrl, Object.assign({}, opts, { _triedAlt: true }));
+            console.debug(`${debugPrefix} fallback response for ${altUrl}: status=${resp2 && resp2.status}`);
+            return { resp: resp2, usedAlt: true, altUrl };
+          } catch (err2) {
+            console.warn(`${debugPrefix} fallback fetch also failed for ${altUrl}:`, err2 && err2.message ? err2.message : err2);
+            return { resp: null, usedAlt: true, altUrl };
+          }
+        }
+      }
+      return { resp: null, usedAlt: false, altUrl: null };
+    }
+  }
+
+  // --- Normalize helpers (sin cambios) ---
   HL.api.normalizeApiToCsvFields = function(item, source) {
     const out = {};
     const s = (v) => v === undefined || v === null ? '' : String(v);
@@ -80,14 +159,39 @@
     return Array.from(map.values());
   }
 
+  // fetch helper used by getDbFirstPreference
+  async function safeGetJson(url, opts) {
+    const resWrap = await fetchWithFallback(url, opts);
+    if (!resWrap || !resWrap.resp) {
+      console.warn('[HL.api.safeGetJson] no response for', url);
+      return null;
+    }
+    const resp = resWrap.resp;
+    try {
+      if (!resp.ok) {
+        console.warn('[HL.api.safeGetJson] HTTP not ok for', url, 'status', resp.status);
+        return { status: resp.status, ok: false, json: null, usedAlt: resWrap.usedAlt, altUrl: resWrap.altUrl };
+      }
+      const json = await resp.json();
+      return { status: resp.status, ok: true, json, usedAlt: resWrap.usedAlt, altUrl: resWrap.altUrl };
+    } catch (e) {
+      console.warn('[HL.api.safeGetJson] parse json failed for', url, e && e.message ? e.message : e);
+      return { status: resp.status, ok: false, json: null, usedAlt: resWrap.usedAlt, altUrl: resWrap.altUrl };
+    }
+  }
+
   async function getDbFirstPreference() {
     try {
       const cfg = HL.config || {};
       if (typeof cfg.useDbFirst !== 'undefined') return !!cfg.useDbFirst;
-      const res = await fetch(apiUrl('/config'));
-      if (res && res.ok) {
-        const json = await res.json();
-        if (typeof json.useDbFirst !== 'undefined') return !!json.useDbFirst;
+      const url = apiUrl('/config');
+      console.debug('[HL.api.getDbFirstPreference] fetching', url);
+      const got = await safeGetJson(url);
+      if (got && got.ok && got.json) {
+        console.debug('[HL.api.getDbFirstPreference] /api/config returned', got.json);
+        if (typeof got.json.useDbFirst !== 'undefined') return !!got.json.useDbFirst;
+      } else {
+        console.debug('[HL.api.getDbFirstPreference] /api/config not available or returned non-ok', got && got.status);
       }
     } catch (e) {
       if (HL.config && HL.config.DEBUG_SHOW_RAW) console.warn('No se pudo obtener /api/config', e);
@@ -95,77 +199,30 @@
     return true;
   }
 
-  // ---- Nuevo: fetch por página ----
-  HL.api.fetchPlantsPage = async function(page = 1, perPage = (HL.config && HL.config.PAGE_SIZE) || 6) {
-    const cfg = HL.config || {};
-    const preferDb = await getDbFirstPreference().catch(()=>true);
-
-    // try page/perPage first
-    try {
-      const url = apiUrl(`/plants?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`);
-      const res = await fetch(url);
-      if (res && res.ok) {
-        const json = await res.json();
-        if (Array.isArray(json)) return json;
-      }
-    } catch (e) {
-      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage page/perPage failed', e);
-    }
-
-    // fallback: some backends accept limit (we ask limit=perPage and hope server handles page via query)
-    try {
-      const url2 = apiUrl(`/plants?limit=${encodeURIComponent(perPage)}&page=${encodeURIComponent(page)}`);
-      const r2 = await fetch(url2);
-      if (r2 && r2.ok) {
-        const j2 = await r2.json();
-        if (Array.isArray(j2)) return j2;
-      }
-    } catch (e) {
-      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage fallback failed', e);
-    }
-
-    // last resort: ask first N and slice client-side (not ideal but safe)
-    try {
-      const url3 = apiUrl(`/plants?limit=${encodeURIComponent(perPage * page)}`);
-      const r3 = await fetch(url3);
-      if (r3 && r3.ok) {
-        const j3 = await r3.json();
-        if (Array.isArray(j3)) {
-          const start = (page - 1) * perPage;
-          return j3.slice(start, start + perPage);
-        }
-      }
-    } catch (e) {
-      if (cfg.DEBUG_SHOW_RAW) console.warn('fetchPlantsPage last-resort failed', e);
-    }
-
-    // give up
-    return [];
-  };
-
-  HL.api.fetchPlantsRange = async function(limit = 30, page = 1) {
-    // convenience wrapper: page*limit first attempt via page/perPage
-    return HL.api.fetchPlantsPage(page, limit);
-  };
-
-  // ---- Mantener fetchAllPlants por compatibilidad ----
   HL.api.fetchAllPlants = async function() {
     const cfg = HL.config || {};
     const preferDb = await getDbFirstPreference();
 
     async function tryDb() {
-      console.log('API debug — Iniciando búsqueda en: DB (backend)');
+      console.info('API debug — Iniciando búsqueda en: DB (backend)');
       try {
-        const resDb = await fetch(apiUrl('/plants'));
-        if (!resDb.ok) {
-          console.warn('API debug — /api/plants returned', resDb.status);
-          return null;
+        const url = apiUrl('/plants');
+        console.debug('[HL.api.tryDb] fetch url ->', url);
+        const got = await safeGetJson(url);
+        if (got && got.ok && Array.isArray(got.json)) {
+          console.log('API debug — DB: devuelto', got.json.length, 'items', 'usedAlt:', got.usedAlt, got.altUrl);
+          return got.json;
         }
-        const dbData = await resDb.json();
-        if (Array.isArray(dbData)) {
-          console.log('API debug — DB: devuelto', dbData.length, 'items');
-          return dbData;
+        // Some servers return { rows: [...] } or { data: [...] }
+        if (got && got.ok && got.json && Array.isArray(got.json.rows)) {
+          console.log('API debug — DB(rows): devuelto', got.json.rows.length, 'items');
+          return got.json.rows;
         }
+        if (got && got.ok && got.json && Array.isArray(got.json.data)) {
+          console.log('API debug — DB(data): devuelto', got.json.data.length, 'items');
+          return got.json.data;
+        }
+        console.warn('API debug — /api/plants returned unexpected shape or non-ok status', got && got.status);
       } catch (e) {
         console.warn('tryDb: fallo', e);
       }
@@ -176,12 +233,11 @@
       console.log('API debug — Iniciando búsqueda en: Perenual');
       try {
         const url = apiUrl('/proxy/perenual') + `?page=1&per_page=100`;
-        const r = await fetch(url);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        const data = await r.json();
-        if (data?.data?.length) {
-          console.log('API debug — Perenual: devuelto', data.data.length, 'items');
-          return data.data.map(d => HL.api.normalizeApiToCsvFields(d, 'perenual'));
+        console.debug('[HL.api.tryPerenual] fetch url ->', url);
+        const got = await safeGetJson(url);
+        if (got && got.ok && got.json && got.json.data && Array.isArray(got.json.data)) {
+          console.log('API debug — Perenual: devuelto', got.json.data.length, 'items');
+          return got.json.data.map(d => HL.api.normalizeApiToCsvFields(d, 'perenual'));
         }
       } catch (e) {
         console.warn('API debug — Perenual failed:', e && e.message ? e.message : e);
@@ -193,12 +249,11 @@
       console.log('API debug — Iniciando búsqueda en: Trefle');
       try {
         const url = apiUrl('/proxy/trefle') + `?page=1&limit=100`;
-        const r = await fetch(url);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        const data = await r.json();
-        if (data?.data?.length) {
-          console.log('API debug — Trefle: devuelto', data.data.length, 'items');
-          return data.data.map(d => HL.api.normalizeApiToCsvFields(d, 'trefle'));
+        console.debug('[HL.api.tryTrefle] fetch url ->', url);
+        const got = await safeGetJson(url);
+        if (got && got.ok && got.json && got.json.data && Array.isArray(got.json.data)) {
+          console.log('API debug — Trefle: devuelto', got.json.data.length, 'items');
+          return got.json.data.map(d => HL.api.normalizeApiToCsvFields(d, 'trefle'));
         }
       } catch (e) {
         console.warn('API debug — Trefle failed:', e && e.message ? e.message : e);
@@ -206,6 +261,7 @@
       return null;
     }
 
+    // orden de preferencia: DB -> Perenual -> Trefle
     if (preferDb) {
       const dbRes = await tryDb();
       if (Array.isArray(dbRes) && dbRes.length) return mergePlantsByKey(dbRes);
@@ -222,4 +278,11 @@
     }
   };
 
+  // expose for debugging
+  HL.api._internal = HL.api._internal || {};
+  HL.api._internal.fetchWithFallback = fetchWithFallback;
+  HL.api._internal.apiUrl = apiUrl;
+  HL.api._internal.safeGetJson = safeGetJson;
+
+  console.info('[HL.api] module loaded. You can override HL.config.API_BASE or HL.config.BACKEND_URL to adjust paths if needed.');
 })(window.HerboLive);
