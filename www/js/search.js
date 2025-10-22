@@ -1,12 +1,13 @@
 // js/search.js
 // Búsqueda progresiva + búsqueda server-side garantizada + cancel on tab leave
-// - mantiene mostrar rápido (umbral = 12, 2 páginas de 6 items)
-// - tras la búsqueda local siempre hace una llamada al servidor para encontrar más coincidencias
-// - filtra por seenKeys para evitar duplicados
-// - si el usuario sale de la pestaña "Buscar" cancela todo y reanuda prefetch en "Todas"
-
+// Ajustado: GLOBAL_MEMORY_SHOWN_COUNT para forzar allowAll cuando no hay items en memoria
+// Ajustado: allowAll permite aceptar todos los items devueltos por servidor
+// Ajustado: dedupe por scientific_name (si mismo scientific_name y distinto id -> duplicado)
 (function(HL){
   HL.search = HL.search || {};
+
+  // ---------- GLOBAL (por fichero) ----------
+  let GLOBAL_MEMORY_SHOWN_COUNT = 0;
 
   // tokens y estado
   HL.search._searchToken = 0;
@@ -17,14 +18,13 @@
   const INITIAL_MATCH_THRESHOLD = PAGE_SIZE * 2; // 12
   const POLL_INTERVAL_MS = 500;
   const POST_TIMEOUT_POLL_MS = 2000;
-  const SEARCH_TIMEOUT_MS = 60000; // 60s
-  const SERVER_FETCH_PER_PAGE = 100; // pedir un lote grande al servidor (ajustable)
-  const SERVER_FETCH_TIMEOUT_MS = 20000; // 20s para la petición al servidor
+  const SEARCH_TIMEOUT_MS = 150000; // 150s solicitado
+  const SERVER_LAUNCH_DELAY_MS = 10000; // 10s antes de lanzar la búsqueda al servidor
+  const SERVER_FETCH_PER_PAGE = 100; // lote server-side
+  const SERVER_FETCH_TIMEOUT_MS = 20000; // 20s timeout para petición al servidor
 
   // utilidades
-  function normalizeQuery(s) {
-    return s ? String(s).trim().toLowerCase() : '';
-  }
+  function normalizeQuery(s) { return s ? String(s).trim().toLowerCase() : ''; }
 
   function makeItemKey(item) {
     try {
@@ -33,9 +33,7 @@
       const common = (item && (item.common_name || item.common || '')) || '';
       const img = (item && (item.image_url || (item.images && item.images[0]) || '')) || '';
       return `${id}||${sci}||${common}||${img}`.toLowerCase().trim();
-    } catch (e) {
-      try { return JSON.stringify(item || {}).slice(0,200); } catch (ee) { return String(item); }
-    }
+    } catch (e) { try { return JSON.stringify(item || {}).slice(0,200); } catch (ee) { return String(item); } }
   }
 
   function itemMatchesQuery(p, q) {
@@ -60,20 +58,20 @@
     const act = HL.search._active[token];
     if (!act) return;
     try {
-      console.info(`[search] cancelPreviousSearch token=${token} -> clearing timers / aborting fetches`);
-      if (act.pollInterval) clearInterval(act.pollInterval);
-      if (act.postPollInterval) clearInterval(act.postPollInterval);
-      if (act.timeoutTimer) clearTimeout(act.timeoutTimer);
+      console.info(`[search.cancel] cancelPreviousSearch token=${token} -> clearing timers / aborting fetches`);
+      if (act.pollInterval) { clearInterval(act.pollInterval); act.pollInterval = null; console.debug(`[search.cancel] cleared pollInterval token=${token}`); }
+      if (act.postPollInterval) { clearInterval(act.postPollInterval); act.postPollInterval = null; console.debug(`[search.cancel] cleared postPollInterval token=${token}`); }
+      if (act.serverLaunchTimer) { clearTimeout(act.serverLaunchTimer); act.serverLaunchTimer = null; console.debug(`[search.cancel] cleared serverLaunchTimer token=${token}`); }
+      if (act.timeoutTimer) { clearTimeout(act.timeoutTimer); act.timeoutTimer = null; console.debug(`[search.cancel] cleared timeoutTimer token=${token}`); }
       if (act.serverFetchController && typeof act.serverFetchController.abort === 'function') {
-        try { act.serverFetchController.abort(); } catch (e) {}
+        try { act.serverFetchController.abort(); console.debug(`[search.cancel] aborted fetch controller token=${token}`); } catch (e) {}
       }
-    } catch (e) {
-      console.warn('[search] cancelPreviousSearch error', e);
-    }
+      act.memoryScanActive = false;
+    } catch (e) { console.warn('[search.cancel] cancelPreviousSearch error', e); }
     delete HL.search._active[token];
+    console.info(`[search.cancel] token=${token} fully removed from active map`);
   }
 
-  // Reanuda prefetch de la pestaña "Todas" (cuando salimos de Buscar)
   function resumeAllPrefetch() {
     try {
       if (HL.prefetch && typeof HL.prefetch.start === 'function') {
@@ -81,86 +79,138 @@
         HL.prefetch.start();
         return;
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
     try {
       if (HL.loader && typeof HL.loader.startBackgroundLoad === 'function') {
         console.debug('[search] resumeAllPrefetch -> HL.loader.startBackgroundLoad() fallback');
         HL.loader.startBackgroundLoad();
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
   }
 
-  // Detectar cambios de pestaña (tabs en index.html son anchors #intro #buscar #todas)
   function setupTabLeaveHandler() {
     try {
       const tabAnchors = document.querySelectorAll('.tabs a');
       if (!tabAnchors || !tabAnchors.length) return;
       tabAnchors.forEach(a => {
         a.addEventListener('click', (ev) => {
-          setTimeout(() => {  // pequeño delay para que Materialize actualice active class
+          setTimeout(() => {
             const active = document.querySelector('.tabs a.active');
             const href = active ? active.getAttribute('href') : null;
             if (href !== '#buscar') {
-              // cancelar búsqueda activa(s)
               console.info('[search.tab] leaving buscar tab -> cancelling active searches');
-              // cancel all active tokens
               Object.keys(HL.search._active).forEach(t => cancelPreviousSearch(Number(t)));
-              // reanudar prefetch de "Todas"
               resumeAllPrefetch();
             } else {
-              // entering buscar tab -> optionally stop global prefetch (best-effort)
               try {
                 if (HL.prefetch && typeof HL.prefetch.stop === 'function') {
                   console.debug('[search.tab] entering buscar tab -> HL.prefetch.stop() (best-effort)');
                   HL.prefetch.stop();
                 }
-              } catch (e) { /* ignore */ }
+              } catch (e) {}
             }
           }, 50);
         }, { passive:true });
       });
-    } catch (e) {
-      console.debug('[search.tab] setupTabLeaveHandler error', e);
-    }
+    } catch (e) { console.debug('[search.tab] setupTabLeaveHandler error', e); }
   }
 
-  // server-side search: primero intenta /api/plants?q=..., si falla fallback a HL.api.fetchAllPlants()
-  async function launchServerSideSearch(myToken, q, seenKeys, matches) {
-    if (!q) return;
-    console.info(`[search.server] start token=${myToken} query="${q}"`);
+  // server-side search
+  async function launchServerSideSearch(myToken, q, stateHolder) {
+    if (!q) return 0;
+    const act = HL.search._active[myToken];
+    if (!act) { console.debug('[search.server] launch aborted: no act'); return 0; }
+    if (act.serverLaunched) { console.debug('[search.server] server already launched for token=' + myToken); return 0; }
+    act.serverLaunched = true;
 
-    // prepare abort controller
+    // force allowAll if memory showed none
+    stateHolder.allowAll = (GLOBAL_MEMORY_SHOWN_COUNT === 0);
+    console.info(`[search.server] launching server-side search token=${myToken} q="${q}" GLOBAL_MEMORY_SHOWN_COUNT=${GLOBAL_MEMORY_SHOWN_COUNT} -> allowAll=${stateHolder.allowAll}`);
+
+    // stop local scanning immediately
+    try {
+      if (act.pollInterval) { clearInterval(act.pollInterval); act.pollInterval = null; console.debug(`[search.server] cleared pollInterval token=${myToken}`); }
+      if (act.postPollInterval) { clearInterval(act.postPollInterval); act.postPollInterval = null; console.debug(`[search.server] cleared postPollInterval token=${myToken}`); }
+      act.memoryScanActive = false;
+      console.info(`[search.server] local memory scanning disabled for token=${myToken}`);
+    } catch (e) { console.warn('[search.server] clearing intervals error', e); }
+
     let controller = null;
     try { controller = (typeof AbortController !== 'undefined') ? new AbortController() : null; } catch (e) { controller = null; }
-    if (!HL.search._active[myToken]) HL.search._active[myToken] = {};
-    HL.search._active[myToken].serverFetchController = controller;
+    act.serverFetchController = controller;
 
-    // helper to process list results (dedupe + push new)
+    // ensure scientificSeen map exists (for dedupe by scientific)
+    if (!stateHolder.scientificSeen) stateHolder.scientificSeen = new Map();
+
     function processList(list, sourceLabel) {
       if (!Array.isArray(list)) return 0;
       let newAdded = 0;
+      console.info(`[search.server] processing ${list.length} items from ${sourceLabel}`);
+
       for (const it of list) {
         const key = makeItemKey(it);
-        if (seenKeys.has(key)) continue;
-        // double-check it matches query (safe guard)
-        if (!itemMatchesQuery(it, q)) continue;
-        seenKeys.add(key);
-        matches.push(it);
+        if (stateHolder.seenKeys.has(key)) { /* already exact key */ continue; }
+
+        // If allowAll is false, require itemMatchesQuery; if allowAll true accept everything
+        const matchesQuery = stateHolder.allowAll ? true : itemMatchesQuery(it, q);
+        if (!matchesQuery) {
+          console.debug(`[search.server] skipping item (doesn't match query) key=${key}`);
+          continue;
+        }
+
+        // dedupe by scientific_name: if same scientific_name already present with different id -> skip (user requested)
+        const sci = (it.scientific_name || it.scientific || '').toString().toLowerCase().trim();
+        const id = (it.id || it.ID || it.Id || '') || '';
+        if (sci) {
+          if (stateHolder.scientificSeen.has(sci)) {
+            const existingId = stateHolder.scientificSeen.get(sci);
+            if (existingId && existingId.toString() !== id.toString()) {
+              // Duplicate by scientific name but different id -> skip
+              stateHolder.duplicateMatchesCounter++;
+              console.debug(`[search.server] skipping duplicate by scientific_name "${sci}" (existing id=${existingId} vs new id=${id})`);
+              continue;
+            }
+            // else same id -> it's fine to add if key different (rare)
+          }
+        }
+
+        // Additional dedupe against memory's shown scientific names when memoryShownCount > 0
+        if (!stateHolder.allowAll && stateHolder.memoryShownCount > 0 && sci && stateHolder.memoryShownScientificNames.has(sci)) {
+          stateHolder.duplicateMatchesCounter++;
+          console.debug(`[search.server] skipping because scientific_name "${sci}" was shown from memory (duplicate)`);
+          continue;
+        }
+
+        // accept item
+        stateHolder.seenKeys.add(key);
+        stateHolder.matches.push(it);
         newAdded++;
+
+        // register scientificSeen
+        if (sci && !stateHolder.scientificSeen.has(sci)) stateHolder.scientificSeen.set(sci, id || '');
+
+      } // end for
+
+      // If duplicates reached memoryShownCount, allow previously skipped logic (kept from prior behavior)
+      if (!stateHolder.allowAll && stateHolder.memoryShownCount > 0 && stateHolder.duplicateMatchesCounter >= stateHolder.memoryShownCount) {
+        console.info(`[search.server] duplicateMatchesCounter (${stateHolder.duplicateMatchesCounter}) >= memoryShownCount (${stateHolder.memoryShownCount}) -> allowAll=true`);
+        stateHolder.allowAll = true;
+        // We won't reprocess skipped items list here specifically; server likely returns everything and second pass would add them if not seen.
       }
-      console.info(`[search.server] ${sourceLabel} returned ${list.length} items, new added=${newAdded}, total matches=${matches.length}`);
+
       if (newAdded > 0) {
-        // if initial not rendered, or to update incremental view
-        HL.state.searchResults = matches.slice();
-        // if we haven't set page to 1 then set
+        HL.state.searchResults = stateHolder.matches.slice();
         HL.state.currentPageSearch = HL.state.currentPageSearch || 1;
+        console.info(`[search.server] rendering search page after adding ${newAdded} items (total=${stateHolder.matches.length})`);
         HL.render.renderSearchPlantsPage(HL.state.currentPageSearch);
       }
+
+      console.info(`[search.server] ${sourceLabel} processed: newAdded=${newAdded}, totalMatches=${stateHolder.matches.length}, duplicateMatchesCounter=${stateHolder.duplicateMatchesCounter}, allowAll=${stateHolder.allowAll}`);
       return newAdded;
     }
 
-    // attempt A: server-side search endpoint
-    let didSomething = false;
+    // fetch server endpoint
+    let totalNewAdded = 0;
     try {
       const url = `/api/plants?q=${encodeURIComponent(q)}&perPage=${SERVER_FETCH_PER_PAGE}`;
       const opts = controller ? { signal: controller.signal } : {};
@@ -168,7 +218,7 @@
         try { if (controller && typeof controller.abort === 'function') controller.abort(); } catch (e) {}
       }, SERVER_FETCH_TIMEOUT_MS);
 
-      console.info(`[search.server] sending request to ${url}`);
+      console.info(`[search.server] fetching ${url}`);
       const resp = await fetch(url, opts);
       clearTimeout(timeoutId);
       if (!resp || !resp.ok) {
@@ -176,19 +226,13 @@
       } else {
         const json = await resp.json();
         if (Array.isArray(json)) {
-          processList(json, 'serverSearch(/api/plants)');
-          didSomething = true;
+          totalNewAdded += processList(json, 'serverSearch(/api/plants)[array]');
         } else if (json && Array.isArray(json.rows)) {
-          processList(json.rows, 'serverSearch(rows)');
-          didSomething = true;
+          totalNewAdded += processList(json.rows, 'serverSearch(rows)');
         } else if (json && Array.isArray(json.data)) {
-          processList(json.data, 'serverSearch(data)');
-          didSomething = true;
-        } else if (Array.isArray(json)) {
-          processList(json, 'serverSearch(array)');
-          didSomething = true;
+          totalNewAdded += processList(json.data, 'serverSearch(data)');
         } else {
-          console.debug('[search.server] serverSearch returned unexpected shape, will fallback if needed');
+          console.debug('[search.server] serverSearch returned unexpected shape');
         }
       }
     } catch (e) {
@@ -196,47 +240,71 @@
       else console.warn('[search.server] server fetch error', e);
     }
 
-    // If server attempt didn't add anything, fallback to HL.api.fetchAllPlants()
-    if (!didSomething) {
+    // fallback if server returned none
+    if (totalNewAdded === 0) {
       try {
         if (HL.api && typeof HL.api.fetchAllPlants === 'function') {
           console.info('[search.server] falling back to HL.api.fetchAllPlants()');
           const fallbackList = await HL.api.fetchAllPlants();
           if (Array.isArray(fallbackList) && fallbackList.length) {
-            processList(fallbackList, 'HL.api.fetchAllPlants fallback');
+            totalNewAdded += processList(fallbackList, 'HL.api.fetchAllPlants fallback');
           } else {
             console.debug('[search.server] fallback returned no items');
           }
         } else {
-          console.debug('[search.server] no HL.api.fetchAllPlants available to fallback to');
+          console.debug('[search.server] no HL.api.fetchAllPlants available');
         }
-      } catch (e) {
-        console.warn('[search.server] fallback fetchAllPlants error', e);
+      } catch (e) { console.warn('[search.server] fallback fetchAllPlants error', e); }
+    }
+
+    // cleanup
+    try { if (HL.search._active[myToken]) delete HL.search._active[myToken].serverFetchController; } catch (e) {}
+
+    console.info(`[search.server] finished token=${myToken} totalNewAdded=${totalNewAdded} duplicateMatches=${stateHolder.duplicateMatchesCounter} memoryShownCount=${stateHolder.memoryShownCount} allowAll=${stateHolder.allowAll}`);
+
+    if (totalNewAdded > 0) {
+      console.info(`[search.server] server added results (${totalNewAdded}) -> stopping active search token=${myToken} and resuming prefetch`);
+      cancelPreviousSearch(myToken);
+      resumeAllPrefetch();
+    } else {
+      if (HL.search._active[myToken]) {
+        HL.search._active[myToken].memoryScanActive = false;
+        if (HL.search._active[myToken].pollInterval) { clearInterval(HL.search._active[myToken].pollInterval); HL.search._active[myToken].pollInterval = null; }
+        console.info(`[search.server] no new results added -> memory scanning disabled for token=${myToken}`);
       }
     }
 
-    // cleanup controller ref
-    try { if (HL.search._active[myToken]) delete HL.search._active[myToken].serverFetchController; } catch (e) {}
-    console.info(`[search.server] finished token=${myToken}`);
+    return totalNewAdded;
   }
 
-  // main search entrypoint
+  // main entrypoint
   HL.search.searchPlant = async function searchPlant() {
     const rawEl = document.getElementById('search-input');
     const rawQuery = rawEl ? rawEl.value : '';
     const q = normalizeQuery(rawQuery);
 
+    GLOBAL_MEMORY_SHOWN_COUNT = 0;
+
     HL.search._searchToken = (HL.search._searchToken || 0) + 1;
     const myToken = HL.search._searchToken;
     console.info(`[search] start token=${myToken} query="${rawQuery}" normalized="${q}"`);
 
-    // cancel previous token
     Object.keys(HL.search._active).forEach(t => {
       const tn = Number(t);
       if (tn !== myToken) cancelPreviousSearch(tn);
     });
 
-    HL.search._active[myToken] = { pollInterval: null, postPollInterval: null, timeoutTimer: null, serverFetchController: null, renderedInitial: false };
+    HL.search._active[myToken] = {
+      pollInterval: null,
+      postPollInterval: null,
+      timeoutTimer: null,
+      serverFetchController: null,
+      serverLaunchTimer: null,
+      serverLaunched: false,
+      memoryScanActive: true,
+      renderedInitial: false,
+      startTs: Date.now()
+    };
 
     if (!q) {
       console.info('[search] empty query -> clearing results');
@@ -246,36 +314,42 @@
       return;
     }
 
-    // show loading
     HL.loader.showLoadingForContainer('search-results-container', `Buscando "${HL.utils.escapeHtml(rawQuery)}"...`);
     HL.state.searchResults = [];
     HL.state.currentPageSearch = 1;
 
-    // try to stop global prefetch (best-effort)
-    try {
-      if (HL.prefetch && typeof HL.prefetch.stop === 'function') {
-        HL.prefetch.stop();
-        console.debug('[search] HL.prefetch.stop() called (best-effort)');
-      }
-    } catch (e) { /* ignore */ }
+    try { if (HL.prefetch && typeof HL.prefetch.stop === 'function') { HL.prefetch.stop(); console.debug('[search] HL.prefetch.stop() called (best-effort)'); } } catch (e) {}
 
-    // try to start background load if not started (best-effort)
     try {
       if (!HL.state.plantsPromise && HL.loader && typeof HL.loader.startBackgroundLoad === 'function') {
         const p = HL.loader.startBackgroundLoad();
         if (p && typeof p.then === 'function') p.catch(err => console.warn('[search] startBackgroundLoad rejected', err));
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
 
     const seenKeys = new Set();
     const matches = [];
     let renderedInitial = false;
     let lastKnownPlantsLen = (HL.state && Array.isArray(HL.state.plants)) ? HL.state.plants.length : 0;
 
+    const memoryShownScientificNames = new Set();
+
+    const stateHolder = {
+      seenKeys,
+      matches,
+      allowAll: false,
+      duplicateMatchesCounter: 0,
+      memoryShownCount: 0,
+      memoryShownScientificNames
+    };
+
     function scanMemoryAndMaybeRender() {
+      const act = HL.search._active[myToken];
+      if (!act) { console.debug(`[search] scanMemory aborted: no act for token=${myToken}`); return false; }
+      if (act.memoryScanActive === false) { return false; }
+
       let newFound = false;
 
-      // scan HL.state.plants
       try {
         if (HL.state && Array.isArray(HL.state.plants)) {
           for (const it of HL.state.plants) {
@@ -288,11 +362,8 @@
             }
           }
         }
-      } catch (e) {
-        console.warn('[search] error scanning HL.state.plants', e);
-      }
+      } catch (e) { console.warn('[search] error scanning HL.state.plants', e); }
 
-      // scan HL.state.pages if present
       try {
         if (HL.state && HL.state.pages && typeof HL.state.pages === 'object') {
           for (const pn of Object.keys(HL.state.pages)) {
@@ -309,38 +380,74 @@
             }
           }
         }
-      } catch (e) {
-        console.debug('[search] pages scan error', e);
-      }
+      } catch (e) { console.debug('[search] pages scan error', e); }
 
       if (HL.state && Array.isArray(HL.state.plants)) lastKnownPlantsLen = HL.state.plants.length;
 
-      console.debug(`[search] scanMemory -> matches now=${matches.length} (newFound=${newFound})`);
+      console.debug(`[search] scanMemory -> matches now=${matches.length} (newFound=${newFound}) token=${myToken}`);
 
       if (!renderedInitial && matches.length >= INITIAL_MATCH_THRESHOLD) {
-        console.info(`[search] initial threshold reached (${matches.length} >= ${INITIAL_MATCH_THRESHOLD}) -> rendering initial results`);
+        console.info(`[search] initial threshold reached (${matches.length} >= ${INITIAL_MATCH_THRESHOLD}) -> rendering initial results token=${myToken}`);
         HL.state.searchResults = matches.slice();
         HL.state.currentPageSearch = 1;
         HL.render.renderSearchPlantsPage(1);
         renderedInitial = true;
         if (HL.search._active[myToken]) HL.search._active[myToken].renderedInitial = true;
 
-        // After rendering quickly, launch server-side search to get more
-        launchServerSideSearch(myToken, q, seenKeys, matches).catch(e => console.warn('[search.server] launch error', e));
+        GLOBAL_MEMORY_SHOWN_COUNT = HL.state.searchResults.length;
+        stateHolder.memoryShownCount = GLOBAL_MEMORY_SHOWN_COUNT;
+        memoryShownScientificNames.clear();
+        for (const p of HL.state.searchResults) {
+          const sci = (p.scientific_name || p.scientific || '').toString().toLowerCase().trim();
+          if (sci) memoryShownScientificNames.add(sci);
+        }
+        stateHolder.memoryShownScientificNames = memoryShownScientificNames;
+        stateHolder.allowAll = (GLOBAL_MEMORY_SHOWN_COUNT === 0);
+        console.info(`[search] initialMemoryShownCount=${GLOBAL_MEMORY_SHOWN_COUNT} allowAll=${stateHolder.allowAll} token=${myToken}`);
+
+        if (HL.search._active[myToken]) {
+          const act = HL.search._active[myToken];
+          if (!act.serverLaunchTimer && !act.serverLaunched) {
+            act.serverLaunchTimer = setTimeout(() => {
+              if (!HL.search._active[myToken]) return;
+              console.info(`[search.server] scheduled timer fired -> launching server search token=${myToken} q="${q}" allowAll=${stateHolder.allowAll}`);
+              launchServerSideSearch(myToken, q, stateHolder).catch(e => console.warn('[search.server] launch error', e));
+            }, SERVER_LAUNCH_DELAY_MS);
+            console.debug(`[search.server] scheduled to start in ${SERVER_LAUNCH_DELAY_MS}ms token=${myToken} q="${q}"`);
+          }
+        }
       } else if (!renderedInitial && matches.length > 0 && HL.state.plants && HL.state.plants.length === lastKnownPlantsLen) {
-        // fast-path partial render
-        console.info(`[search] fast-path render partial (${matches.length} matches)`);
+        console.info(`[search] fast-path render partial (${matches.length} matches) token=${myToken}`);
         HL.state.searchResults = matches.slice();
         HL.state.currentPageSearch = 1;
         HL.render.renderSearchPlantsPage(1);
         renderedInitial = true;
         if (HL.search._active[myToken]) HL.search._active[myToken].renderedInitial = true;
 
-        // Also launch server-side search
-        launchServerSideSearch(myToken, q, seenKeys, matches).catch(e => console.warn('[search.server] launch error', e));
+        GLOBAL_MEMORY_SHOWN_COUNT = HL.state.searchResults.length;
+        stateHolder.memoryShownCount = GLOBAL_MEMORY_SHOWN_COUNT;
+        memoryShownScientificNames.clear();
+        for (const p of HL.state.searchResults) {
+          const sci = (p.scientific_name || p.scientific || '').toString().toLowerCase().trim();
+          if (sci) memoryShownScientificNames.add(sci);
+        }
+        stateHolder.memoryShownScientificNames = memoryShownScientificNames;
+        stateHolder.allowAll = (GLOBAL_MEMORY_SHOWN_COUNT === 0);
+        console.info(`[search] fast-path initialMemoryShownCount=${GLOBAL_MEMORY_SHOWN_COUNT} allowAll=${stateHolder.allowAll} token=${myToken}`);
+
+        if (HL.search._active[myToken]) {
+          const act = HL.search._active[myToken];
+          if (!act.serverLaunchTimer && !act.serverLaunched) {
+            act.serverLaunchTimer = setTimeout(() => {
+              if (!HL.search._active[myToken]) return;
+              console.info(`[search.server] scheduled timer fired -> launching server search token=${myToken} q="${q}" allowAll=${stateHolder.allowAll}`);
+              launchServerSideSearch(myToken, q, stateHolder).catch(e => console.warn('[search.server] launch error', e));
+            }, SERVER_LAUNCH_DELAY_MS);
+            console.debug(`[search.server] scheduled to start in ${SERVER_LAUNCH_DELAY_MS}ms token=${myToken} q="${q}"`);
+          }
+        }
       } else if (renderedInitial && matches.length > (HL.state.searchResults && HL.state.searchResults.length ? HL.state.searchResults.length : 0)) {
-        // incremental update
-        console.info(`[search] incremental update -> matches increased to ${matches.length}, updating render`);
+        console.info(`[search] incremental update -> matches increased to ${matches.length}, updating render token=${myToken}`);
         HL.state.searchResults = matches.slice();
         HL.render.renderSearchPlantsPage(HL.state.currentPageSearch || 1);
       }
@@ -348,24 +455,33 @@
       return newFound;
     }
 
-    // initial synchronous scan
     try {
       console.debug('[search] performing initial synchronous scanMemorySourcesAndUpdate()');
       scanMemoryAndMaybeRender();
-    } catch (e) {
-      console.warn('[search] initial scan failed', e);
+    } catch (e) { console.warn('[search] initial scan failed', e); }
+
+    // guaranteed server launch scheduling (if not scheduled by memory scan)
+    if (HL.search._active[myToken]) {
+      const act = HL.search._active[myToken];
+      if (!act.serverLaunchTimer && !act.serverLaunched) {
+        act.serverLaunchTimer = setTimeout(() => {
+          if (!HL.search._active[myToken]) return;
+          console.info(`[search.server] guaranteed scheduled timer fired -> launching server search token=${myToken} q="${q}"`);
+          launchServerSideSearch(myToken, q, stateHolder).catch(e => console.warn('[search.server] guaranteed launch error', e));
+        }, SERVER_LAUNCH_DELAY_MS);
+        console.debug(`[search.server] guaranteed scheduled to start in ${SERVER_LAUNCH_DELAY_MS}ms token=${myToken} q="${q}"`);
+      }
     }
 
-    // if nothing sufficient found, still launch server-side search (guaranteed)
-    if (!HL.search._active[myToken]) HL.search._active[myToken] = {};
-    // always launch server side search after initial local scan (guaranteed per your request)
-    launchServerSideSearch(myToken, q, seenKeys, matches).catch(e => console.warn('[search.server] guaranteed launch error', e));
-
-    // attach to plantsPromise if present to rescan when loaded
     if (HL.state && HL.state.plantsPromise && typeof HL.state.plantsPromise.then === 'function') {
       try {
         const onReady = () => {
           if (HL.search._searchToken !== myToken) return;
+          const act = HL.search._active[myToken];
+          if (!act || act.memoryScanActive === false) {
+            console.debug(`[search] onReady (plantsPromise) called but memoryScanActive=false for token=${myToken}, ignoring`);
+            return;
+          }
           console.debug('[search] plantsPromise resolved -> rescanning memory');
           scanMemoryAndMaybeRender();
         };
@@ -374,56 +490,63 @@
       } catch (e) { console.debug('[search] attach to plantsPromise failed', e); }
     }
 
-    // polling for new local data (fast)
     HL.search._active[myToken].pollInterval = setInterval(() => {
       if (HL.search._searchToken !== myToken) {
         console.info(`[search] token changed - stopping pollInterval for token=${myToken}`);
         cancelPreviousSearch(myToken);
         return;
       }
-      try {
-        const newFound = scanMemoryAndMaybeRender();
-        if (Date.now() - (HL.search._active[myToken].startTs || Date.now()) >= SEARCH_TIMEOUT_MS) {
-          // switch to post poll
-        }
-      } catch (e) {
-        console.warn('[search] poll error', e);
+      const act = HL.search._active[myToken];
+      if (!act || act.memoryScanActive === false) {
+        if (act && act.pollInterval) { clearInterval(act.pollInterval); act.pollInterval = null; console.debug(`[search] cleared pollInterval in interval callback token=${myToken}`); }
+        return;
       }
+      try { scanMemoryAndMaybeRender(); } catch (e) { console.warn('[search] poll error', e); }
     }, POLL_INTERVAL_MS);
 
-    // finalizer (force render after timeout if not rendered)
     HL.search._active[myToken].timeoutTimer = setTimeout(() => {
       try {
         if (HL.search._searchToken !== myToken) { cancelPreviousSearch(myToken); return; }
-        if (!renderedInitial) {
+        const act = HL.search._active[myToken];
+        if (!act) return;
+        if (!act.renderedInitial) {
           console.warn('[search] finalizer: forcing render as no initial render happened within timeout');
           HL.state.searchResults = matches.slice();
           HL.state.currentPageSearch = 1;
           HL.render.renderSearchPlantsPage(1);
-          renderedInitial = true;
-          if (HL.search._active[myToken]) HL.search._active[myToken].renderedInitial = true;
+          act.renderedInitial = true;
+
+          GLOBAL_MEMORY_SHOWN_COUNT = HL.state.searchResults.length;
+          stateHolder.memoryShownCount = GLOBAL_MEMORY_SHOWN_COUNT;
+          memoryShownScientificNames.clear();
+          for (const p of HL.state.searchResults) {
+            const sci = (p.scientific_name || p.scientific || '').toString().toLowerCase().trim();
+            if (sci) memoryShownScientificNames.add(sci);
+          }
+          stateHolder.memoryShownScientificNames = memoryShownScientificNames;
+          stateHolder.allowAll = (GLOBAL_MEMORY_SHOWN_COUNT === 0);
+          console.info(`[search] finalizer initialMemoryShownCount=${GLOBAL_MEMORY_SHOWN_COUNT} allowAll=${stateHolder.allowAll}`);
         } else {
           console.debug('[search] finalizer: initial render already done');
         }
 
-        // switch to post poll
         if (HL.search._active[myToken]) {
-          clearInterval(HL.search._active[myToken].pollInterval);
-          HL.search._active[myToken].pollInterval = null;
+          if (HL.search._active[myToken].pollInterval) { clearInterval(HL.search._active[myToken].pollInterval); HL.search._active[myToken].pollInterval = null; }
           HL.search._active[myToken].postPollInterval = setInterval(() => {
             if (HL.search._searchToken !== myToken) { cancelPreviousSearch(myToken); return; }
+            const act = HL.search._active[myToken];
+            if (!act || act.memoryScanActive === false) {
+              if (act && act.postPollInterval) { clearInterval(act.postPollInterval); act.postPollInterval = null; }
+              return;
+            }
             try { scanMemoryAndMaybeRender(); } catch (e) { console.debug('[search] post-poll error', e); }
           }, POST_TIMEOUT_POLL_MS);
         }
-      } catch (e) {
-        console.warn('[search] finalizer error', e);
-      }
+      } catch (e) { console.warn('[search] finalizer error', e); }
     }, SEARCH_TIMEOUT_MS);
 
-    // done - polls and server search will update UI incrementally
   }; // end searchPlant
 
-  // keep old synchronous helper (compat fallback)
   HL.search.performSearchAndRender = function performSearchAndRender(normalizedQuery, rawQuery) {
     const q = (normalizedQuery || '').toString().toLowerCase();
     if (!q) {
@@ -464,10 +587,8 @@
     HL.render.renderSearchPlantsPage(HL.state.currentPageSearch);
   };
 
-  // setup tab handler now (immediate attempt)
   try { setupTabLeaveHandler(); } catch (e) { console.debug('[search] setupTabLeaveHandler failed', e); }
 
-  // expose cancel for external use (if needed)
   HL.search.cancelActiveSearches = function() {
     Object.keys(HL.search._active).forEach(t => cancelPreviousSearch(Number(t)));
   };
