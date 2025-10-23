@@ -75,7 +75,7 @@ nav .brand-logo {
 }
 
 /* Contenedor de resultados */
-#search-results, 
+#search-results,
 #plants-container,
 #search-results-container {
   margin-top: 20px;
@@ -143,6 +143,7 @@ nav .brand-logo {
   color: #2e7d32;
 }
 
+/* Nota: regla global que existía y puede afectar botones de paginación */
 .btn-flat{
   width: 28%;
 }
@@ -177,3 +178,147 @@ nav .brand-logo {
 /* Opcional - estilo de las tabs cuando fijadas */
 .tabs .tab a { color: #2e7d32; }
 .tabs .tab a.active { color: #1b5e20; }
+
+/* ============================
+   PAGINACIÓN: clase semántica .pagination-fullwidth
+   ============================ */
+
+/* Usaremos esta clase (añadida por JS) para controlar totalmente el layout
+   evitando conflictos con estilos globales (.btn-flat { width: 28% }) y
+   evitando depender de inline styles que el JS pueda establecer. */
+
+.pagination-fullwidth {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px;
+  width: 100% !important;
+  box-sizing: border-box;
+  padding: 10px 8px !important;
+  margin: 12px 0 !important;
+  background: rgba(255,255,255,0.95);
+  flex-wrap: nowrap;            /* mantener en una fila */
+  overflow-x: auto;            /* si hay muchas páginas, permitir scroll horizontal */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Anula la anchura global de .btn-flat solo dentro de paginación */
+.pagination-fullwidth .btn-flat {
+  width: auto !important;
+  flex: 1 1 0 !important;      /* que se expandan proporcionalmente */
+  min-width: 48px !important;  /* evitar que queden diminutos */
+  margin: 0 6px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  text-align: center;
+  font-size: 1.05rem;
+  box-sizing: border-box;
+}
+
+/* El span con la etiqueta de página también se comporta como un elemento flexible */
+.pagination-fullwidth > span {
+  flex: 1 1 0;
+  text-align: center;
+  min-width: 48px;
+  margin: 0 6px;
+  font-size: 1.02rem;
+}
+
+/* Botón activo más visible (mantiene colores Materialize) */
+.pagination-fullwidth .green.darken-2.white-text {
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+/* Íconos no desalinean */
+.pagination-fullwidth i {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* Scrollbar pequeño */
+.pagination-fullwidth::-webkit-scrollbar { height: 6px; }
+
+/* Responsivo: ajustar tamaños si falta espacio */
+@media (max-width: 420px) {
+  .pagination-fullwidth .btn-flat,
+  .pagination-fullwidth > span {
+    font-size: 0.95rem;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    min-width: 44px;
+  }
+}
+
+/* ============================
+   Reglas forzadas por id (funcionan aunque existan inline styles)
+   ============================ */
+
+/* === FORZAR paginación a ancho completo (funciona aunque exista inline style) === */
+#pagination-all,
+#pagination-search {
+  display: flex !important;            /* fuerza el flex aunque exista inline style */
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 10px 8px !important;
+  margin: 12px 0 !important;
+  background: rgba(255,255,255,0.95) !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Anular regla global .btn-flat { width: 28% } dentro de las paginaciones */
+#pagination-all .btn-flat,
+#pagination-search .btn-flat {
+  width: auto !important;
+  flex: 1 1 0 !important;
+  min-width: 48px !important;
+  margin: 0 6px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  text-align: center !important;
+  font-size: 1.05rem !important;
+  box-sizing: border-box !important;
+}
+
+/* El span de la página se comporta similarmente */
+#pagination-all > span,
+#pagination-search > span {
+  flex: 1 1 0 !important;
+  text-align: center !important;
+  min-width: 48px !important;
+  margin: 0 6px !important;
+  font-size: 1.02rem !important;
+}
+
+/* Botón activo */
+#pagination-all .green.darken-2.white-text,
+#pagination-search .green.darken-2.white-text {
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+}
+
+/* Ajustes en móvil */
+@media (max-width: 420px) {
+  #pagination-all .btn-flat,
+  #pagination-search .btn-flat,
+  #pagination-all > span,
+  #pagination-search > span {
+    font-size: 0.95rem !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    min-width: 44px !important;
+  }
+}
+
+/* ============================
+   Ocultar spans de "Página X" (opción A: mantener DOM pero no mostrar)
+   ============================ */
+#current-page-all,
+#current-page-search {
+  display: none !important;
+}

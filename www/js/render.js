@@ -1,11 +1,3 @@
-/* Cambios realizados:
- - renderListPage se mantiene para uso con arrays locales (search).
- - renderAllPlantsPage ahora funciona en modo "server/paged": solicita páginas desde HL.cache/HL.prefetch,
-   muestra spinner si la página no está lista/enriquecida y actualiza la UI cuando esté disponible.
- - Añadido paginador dinámico: muestra una ventana de hasta 5 páginas centrada en la página actual.
- - No se tocaron funciones de búsqueda ni modal. Mantengo tu HTML de tarjetas intacto.
-*/
-
 (function(HL){
   HL.render = HL.render || {};
 
@@ -34,7 +26,10 @@
     if (!source || source.length === 0) {
       container.innerHTML += `<p class="grey-text center-align" style="padding:20px">No hay plantas disponibles.</p>`;
       const pag = document.getElementById(paginationId);
-      if (pag) pag.style.display = 'none';
+      if (pag) {
+        pag.style.display = 'none';
+        pag.classList.remove('pagination-fullwidth');
+      }
       return;
     }
 
@@ -47,6 +42,7 @@
     const end = Math.min(start + HL.config.PAGE_SIZE, source.length);
     const pagePlants = source.slice(start, end);
 
+    // render cards (idéntico a antes)
     pagePlants.forEach(plant => {
       const cardWrapper = document.createElement('div');
       cardWrapper.className = 'plant-card-wrapper col s12 m6 l4';
@@ -70,17 +66,97 @@
       container.appendChild(cardWrapper);
     });
 
-    // paginador del contenedor (este método recibe totalPages, pero en modo server no lo usamos)
+    // === paginador dinámico (hacerlo igual que `renderAllPlantsPage`) ===
     const pag = document.getElementById(paginationId);
-    if (pag) {
-      if (totalPages > 1) {
-        pag.style.display = 'block';
-        const pageSpan = document.getElementById(pageLabelId);
-        if (pageSpan) pageSpan.textContent = `Página ${page} de ${totalPages}`;
-      } else {
-        pag.style.display = 'none';
-      }
+    if (!pag) return;
+
+    // aplicar clase semántica y permitir que CSS gestione display
+    pag.classList.add('pagination-fullwidth');
+    // eliminamos inline display para que la hoja de estilos decida
+    pag.style.removeProperty('display');
+
+    if (totalPages <= 1) {
+      pag.style.display = 'none';
+      pag.classList.remove('pagination-fullwidth');
+      return;
     }
+
+    // ventana de páginas (hasta 5 centradas alrededor de page)
+    const windowSize = 5;
+    let startPage = Math.max(1, page - Math.floor(windowSize/2));
+    let endPage = startPage + windowSize - 1;
+    if (startPage === 1) endPage = Math.max(windowSize, endPage);
+    if (endPage < startPage) endPage = startPage;
+
+    const loadedPagesArr = Array.from(HL.state.loadedPages || new Set()).map(Number).sort((a,b)=>a-b);
+    const highestLoaded = loadedPagesArr.length ? loadedPagesArr[loadedPagesArr.length - 1] : Math.max(page, startPage);
+    if (endPage < page) endPage = page;
+    endPage = Math.max(endPage, Math.min(highestLoaded, page + 2));
+
+    pag.innerHTML = ''; // limpiar contenido previo
+
+    // prev button
+    const prevBtn = document.createElement('button');
+    prevBtn.id = paginationId === 'pagination-search' ? 'prev-page-search' : 'prev-page-all';
+    prevBtn.className = 'btn-flat green-text';
+    prevBtn.title = 'Página anterior';
+    prevBtn.innerHTML = `<i class="material-icons left">chevron_left</i>`;
+    prevBtn.disabled = (page <= 1);
+    prevBtn.addEventListener('click', () => {
+      if (paginationId === 'pagination-search') {
+        HL.render.changePage('search', page - 1);
+      } else {
+        HL.render.changePage('all', page - 1);
+      }
+    });
+
+    // next button
+    const nextBtn = document.createElement('button');
+    nextBtn.id = paginationId === 'pagination-search' ? 'next-page-search' : 'next-page-all';
+    nextBtn.className = 'btn-flat green-text';
+    nextBtn.title = 'Página siguiente';
+    nextBtn.innerHTML = `<i class="material-icons right">chevron_right</i>`;
+    nextBtn.addEventListener('click', () => {
+      if (paginationId === 'pagination-search') {
+        HL.render.changePage('search', page + 1);
+      } else {
+        HL.render.changePage('all', page + 1);
+      }
+    });
+
+    pag.appendChild(prevBtn);
+
+    for (let p = startPage; p <= endPage; p++) {
+      const nb = document.createElement('button');
+      nb.className = 'btn-flat';
+      if (p === page) {
+        nb.className += ' green darken-2 white-text';
+      } else {
+        nb.className += ' green-text';
+      }
+      nb.style.margin = '0 4px';
+      nb.textContent = p;
+      nb.addEventListener('click', () => {
+        if (paginationId === 'pagination-search') {
+          HL.render.changePage('search', p);
+        } else {
+          HL.render.changePage('all', p);
+        }
+      });
+      pag.appendChild(nb);
+    }
+
+    // mantener accesibilidad en aria
+    pag.setAttribute('aria-label', `Página ${page} de ${totalPages}`);
+
+    pag.appendChild(nextBtn);
+
+    // mantener prefetch/window como antes si aplica
+    if (HL.prefetch && typeof HL.prefetch.scheduleAround === 'function' && HL.config.PREFETCH_ENABLED) {
+      HL.prefetch.scheduleAround(page);
+    }
+
+    HL.utils.scrollToTop();
   };
 
   // helper: render page items array into plants-container (reuse card creation)
@@ -153,6 +229,9 @@
     const pag = document.getElementById('pagination-all');
     if (!pag) return;
 
+    // Añadimos la clase semántica (usa CSS para manejar layout)
+    pag.classList.add('pagination-fullwidth');
+
     // build visible numbered pages window (5 buttons centered around current page when possible)
     const windowSize = 5;
     let start = Math.max(1, page - Math.floor(windowSize/2));
@@ -198,8 +277,9 @@
     pageSpan.style.margin = '0 10px';
     pageSpan.textContent = `Página ${page}`;
 
-    pag.style.display = 'flex';
-    pag.style.alignItems = 'center';
+    // No forzamos display en JS. Removemos cualquier inline display por si existía (permitiendo que la CSS pueda manejar el display: flex)
+    pag.style.removeProperty('display');
+    pag.style.removeProperty('alignItems');
 
     pag.appendChild(prevBtn);
     // numbered pages
