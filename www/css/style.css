@@ -113,7 +113,7 @@ nav .brand-logo {
   }
 }
 
-/* Paginación */
+/* Paginación (generales) */
 #prev-page, #next-page, #prev-page-all, #next-page-all, #prev-page-search, #next-page-search {
   font-weight: 600;
 }
@@ -257,7 +257,6 @@ nav .brand-logo {
 /* === FORZAR paginación a ancho completo (funciona aunque exista inline style) === */
 #pagination-all,
 #pagination-search {
-  display: flex !important;            /* fuerza el flex aunque exista inline style */
   align-items: center !important;
   justify-content: space-between !important;
   gap: 8px !important;
@@ -322,3 +321,30 @@ nav .brand-logo {
 #current-page-search {
   display: none !important;
 }
+
+/* ============================
+   Clase para ocultar totalmente paginaciones vacías
+   ============================ */
+
+.hidden-pagination {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Si el contenedor se queda vacío, no mostrar nada */
+#pagination-all:empty,
+#pagination-search:empty {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+

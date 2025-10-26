@@ -20,9 +20,8 @@
   const POST_TIMEOUT_POLL_MS = 2000;
   const SEARCH_TIMEOUT_MS = 150000; // 150s solicitado
   const SERVER_LAUNCH_DELAY_MS = 10000; // 10s antes de lanzar la búsqueda al servidor
-  const SERVER_FETCH_PER_PAGE = 100; // lote server-side -> ahora se recoge en páginas de 100
+  const SERVER_FETCH_PER_PAGE = 100; // lote server-side
   const SERVER_FETCH_TIMEOUT_MS = 20000; // 20s timeout para petición al servidor
-  const MAX_TOTAL_FETCH = 2000; // tope de resultados que el cliente aceptará al pedir "todo"
 
   // utilidades
   function normalizeQuery(s) { return s ? String(s).trim().toLowerCase() : ''; }
@@ -32,7 +31,7 @@
       const id = (item && (item.id || item.ID || item.Id)) || '';
       const sci = (item && (item.scientific_name || item.scientific || '')) || '';
       const common = (item && (item.common_name || item.common || '')) || '';
-      const img = (item && (item.image_url || (item.images && item.images[0]) || '') ) || '';
+      const img = (item && (item.image_url || (item.images && item.images[0]) || '')) || '';
       return `${id}||${sci}||${common}||${img}`.toLowerCase().trim();
     } catch (e) { try { return JSON.stringify(item || {}).slice(0,200); } catch (ee) { return String(item); } }
   }
@@ -192,10 +191,11 @@
 
       } // end for
 
-      // If duplicates reached memoryShownCount, allow previously skipped logic
+      // If duplicates reached memoryShownCount, allow previously skipped logic (kept from prior behavior)
       if (!stateHolder.allowAll && stateHolder.memoryShownCount > 0 && stateHolder.duplicateMatchesCounter >= stateHolder.memoryShownCount) {
         console.info(`[search.server] duplicateMatchesCounter (${stateHolder.duplicateMatchesCounter}) >= memoryShownCount (${stateHolder.memoryShownCount}) -> allowAll=true`);
         stateHolder.allowAll = true;
+        // We won't reprocess skipped items list here specifically; server likely returns everything and second pass would add them if not seen.
       }
 
       if (newAdded > 0) {
@@ -209,85 +209,35 @@
       return newAdded;
     }
 
-    // sequential page-by-page fetching
+    // fetch server endpoint
     let totalNewAdded = 0;
     try {
-      const perPage = SERVER_FETCH_PER_PAGE;
-      let page = 1;
-      let keepGoing = true;
+      const url = `/api/plants?q=${encodeURIComponent(q)}&perPage=${SERVER_FETCH_PER_PAGE}`;
+      const opts = controller ? { signal: controller.signal } : {};
+      const timeoutId = setTimeout(() => {
+        try { if (controller && typeof controller.abort === 'function') controller.abort(); } catch (e) {}
+      }, SERVER_FETCH_TIMEOUT_MS);
 
-      while (keepGoing) {
-        if (!HL.search._active[myToken]) break;
-        if (controller && controller.signal && controller.signal.aborted) break;
-
-        const url = `/api/plants?q=${encodeURIComponent(q)}&perPage=${perPage}&page=${page}`;
-        const opts = controller ? { signal: controller.signal } : {};
-        const timeoutId = SERVER_FETCH_TIMEOUT_MS ? setTimeout(() => {
-          try { if (controller && typeof controller.abort === 'function') controller.abort(); } catch (e) {}
-        }, SERVER_FETCH_TIMEOUT_MS) : null;
-
-        console.info(`[search.server] fetching page ${page} -> ${url}`);
-        let resp = null, json = null;
-        try {
-          resp = await fetch(url, opts);
-        } catch (e) {
-          // fetch thrown (network/abort)
-          if (timeoutId) clearTimeout(timeoutId);
-          if (e && e.name === 'AbortError') {
-            console.warn('[search.server] server fetch aborted (timeout or cancel)');
-          } else {
-            console.warn('[search.server] server fetch error', e);
-          }
-          break;
-        }
-        if (timeoutId) clearTimeout(timeoutId);
-
-        if (!resp || !resp.ok) {
-          console.warn(`[search.server] server search non-ok ${resp ? resp.status : 'no response'}`);
-          break;
-        }
-
-        try {
-          json = await resp.json();
-        } catch (e) {
-          console.warn('[search.server] failed parsing JSON', e);
-          break;
-        }
-
-        // server returns { rows, total, page, perPage } or array
-        let pageRows = [];
+      console.info(`[search.server] fetching ${url}`);
+      const resp = await fetch(url, opts);
+      clearTimeout(timeoutId);
+      if (!resp || !resp.ok) {
+        console.warn(`[search.server] server search non-ok ${resp ? resp.status : 'no response'}`);
+      } else {
+        const json = await resp.json();
         if (Array.isArray(json)) {
-          pageRows = json;
+          totalNewAdded += processList(json, 'serverSearch(/api/plants)[array]');
         } else if (json && Array.isArray(json.rows)) {
-          pageRows = json.rows;
+          totalNewAdded += processList(json.rows, 'serverSearch(rows)');
         } else if (json && Array.isArray(json.data)) {
-          pageRows = json.data;
+          totalNewAdded += processList(json.data, 'serverSearch(data)');
         } else {
-          console.debug('[search.server] serverSearch returned unexpected shape', json);
-          break;
+          console.debug('[search.server] serverSearch returned unexpected shape');
         }
-
-        // process this page
-        totalNewAdded += processList(pageRows, `serverSearch(page=${page})`);
-
-        // stop conditions:
-        // - page returned less than perPage (no more)
-        // - reached MAX_TOTAL_FETCH
-        if (!Array.isArray(pageRows) || pageRows.length < perPage) {
-          console.info('[search.server] last page reached (less than perPage) -> stopping');
-          keepGoing = false;
-        } else if (stateHolder.matches.length >= MAX_TOTAL_FETCH) {
-          console.info(`[search.server] reached MAX_TOTAL_FETCH (${MAX_TOTAL_FETCH}) -> stopping`);
-          keepGoing = false;
-        } else {
-          page++;
-          // small non-blocking pause to yield (avoid immediate hammer)
-          await new Promise(r => setTimeout(r, 20));
-        }
-      } // end while
-
+      }
     } catch (e) {
-      console.warn('[search.server] error during sequential fetch', e);
+      if (e && e.name === 'AbortError') console.warn('[search.server] server fetch aborted (timeout or cancel)');
+      else console.warn('[search.server] server fetch error', e);
     }
 
     // fallback if server returned none
@@ -307,6 +257,7 @@
       } catch (e) { console.warn('[search.server] fallback fetchAllPlants error', e); }
     }
 
+    // cleanup
     try { if (HL.search._active[myToken]) delete HL.search._active[myToken].serverFetchController; } catch (e) {}
 
     console.info(`[search.server] finished token=${myToken} totalNewAdded=${totalNewAdded} duplicateMatches=${stateHolder.duplicateMatchesCounter} memoryShownCount=${stateHolder.memoryShownCount} allowAll=${stateHolder.allowAll}`);

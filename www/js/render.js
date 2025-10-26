@@ -23,16 +23,25 @@
     if (!container) return;
     container.innerHTML = '';
 
-    if (!source || source.length === 0) {
-      container.innerHTML += `<p class="grey-text center-align" style="padding:20px">No hay plantas disponibles.</p>`;
-      const pag = document.getElementById(paginationId);
-      if (pag) {
-        pag.style.display = 'none';
-        pag.classList.remove('pagination-fullwidth');
-      }
+    const pag = document.getElementById(paginationId);
+    if (!pag) {
+      // nothing to do if pagination container is missing
       return;
     }
 
+    // start safe: ensure pagination is empty & hidden until we explicitly show it
+    pag.innerHTML = '';
+    pag.classList.add('hidden-pagination');
+    pag.classList.remove('pagination-fullwidth');
+    pag.style.removeProperty('display'); // let CSS control
+
+    // si no hay resultados, no mostrar paginación (ni flechas) — así no ves absolutamente nada
+    if (!source || source.length === 0) {
+      container.innerHTML += `<p class="grey-text center-align" style="padding:20px">No hay plantas disponibles.</p>`;
+      return;
+    }
+
+    // calcular totalPages en base a los resultados locales (search)
     const totalPages = Math.max(1, Math.ceil(source.length / HL.config.PAGE_SIZE));
     if (page < 1) page = 1;
     if (page > totalPages) page = totalPages;
@@ -42,7 +51,7 @@
     const end = Math.min(start + HL.config.PAGE_SIZE, source.length);
     const pagePlants = source.slice(start, end);
 
-    // render cards (idéntico a antes)
+    // renderizar las cards
     pagePlants.forEach(plant => {
       const cardWrapper = document.createElement('div');
       cardWrapper.className = 'plant-card-wrapper col s12 m6 l4';
@@ -66,32 +75,27 @@
       container.appendChild(cardWrapper);
     });
 
-    // === paginador dinámico (hacerlo igual que `renderAllPlantsPage`) ===
-    const pag = document.getElementById(paginationId);
-    if (!pag) return;
-
-    // aplicar clase semántica y permitir que CSS gestione display
-    pag.classList.add('pagination-fullwidth');
-    // eliminamos inline display para que la hoja de estilos decida
-    pag.style.removeProperty('display');
-
+    // === paginador dinámico (igual que renderAllPlantsPage, pero con totalPages conocido) ===
+    // If only 1 page, keep it hidden entirely
     if (totalPages <= 1) {
-      pag.style.display = 'none';
-      pag.classList.remove('pagination-fullwidth');
+      // keep hidden (class already set)
       return;
     }
 
-    // ventana de páginas (hasta 5 centradas alrededor de page)
+    // Ahora sí construiremos la paginación: quitamos la clase hidden y aplicamos layout
+    pag.classList.remove('hidden-pagination');
+    pag.classList.add('pagination-fullwidth');
+
+    // ventana de páginas (hasta 5 centradas alrededor de page), acotada por totalPages
     const windowSize = 5;
     let startPage = Math.max(1, page - Math.floor(windowSize/2));
     let endPage = startPage + windowSize - 1;
     if (startPage === 1) endPage = Math.max(windowSize, endPage);
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(1, endPage - (windowSize - 1));
+    }
     if (endPage < startPage) endPage = startPage;
-
-    const loadedPagesArr = Array.from(HL.state.loadedPages || new Set()).map(Number).sort((a,b)=>a-b);
-    const highestLoaded = loadedPagesArr.length ? loadedPagesArr[loadedPagesArr.length - 1] : Math.max(page, startPage);
-    if (endPage < page) endPage = page;
-    endPage = Math.max(endPage, Math.min(highestLoaded, page + 2));
 
     pag.innerHTML = ''; // limpiar contenido previo
 
@@ -146,15 +150,8 @@
       pag.appendChild(nb);
     }
 
-    // mantener accesibilidad en aria
     pag.setAttribute('aria-label', `Página ${page} de ${totalPages}`);
-
     pag.appendChild(nextBtn);
-
-    // mantener prefetch/window como antes si aplica
-    if (HL.prefetch && typeof HL.prefetch.scheduleAround === 'function' && HL.config.PREFETCH_ENABLED) {
-      HL.prefetch.scheduleAround(page);
-    }
 
     HL.utils.scrollToTop();
   };
@@ -229,10 +226,13 @@
     const pag = document.getElementById('pagination-all');
     if (!pag) return;
 
-    // Añadimos la clase semántica (usa CSS para manejar layout)
-    pag.classList.add('pagination-fullwidth');
+    // start hidden & empty, only show when we append >1 visible page buttons
+    pag.innerHTML = '';
+    pag.classList.add('hidden-pagination');
+    pag.classList.remove('pagination-fullwidth');
+    pag.style.removeProperty('display');
 
-    // build visible numbered pages window (5 buttons centered around current page when possible)
+    // Build visible numbered pages window (5 buttons centered around current page when possible)
     const windowSize = 5;
     let start = Math.max(1, page - Math.floor(windowSize/2));
     let end = start + windowSize - 1;
@@ -243,7 +243,7 @@
     // ensure end not less than start
     if (end < start) end = start;
 
-    // If we don't have many cached pages yet, expand end to include initial pages
+    // Determine highestLoaded page based on HL.state.loadedPages (if available)
     const loadedPagesArr = Array.from(HL.state.loadedPages || new Set()).map(Number).sort((a,b)=>a-b);
     const highestLoaded = loadedPagesArr.length ? loadedPagesArr[loadedPagesArr.length - 1] : Math.max(page, start);
     // ensure end at least page (so user can move forward)
@@ -251,8 +251,20 @@
     // allow end to grow up to highestLoaded or page+2
     end = Math.max(end, Math.min(highestLoaded, page + 2));
 
-    // Build buttons
-    pag.innerHTML = ''; // clear
+    // sanitize (in case loadedPages are not present): ensure end >= start
+    if (end < start) end = start;
+
+    // If after all this only one page would be visible, keep it hidden (no chevrons)
+    const numVisible = end - start + 1;
+    if (numVisible <= 1) {
+      // keep hidden
+      return;
+    }
+
+    // otherwise build UI and unhide
+    pag.classList.remove('hidden-pagination');
+    pag.classList.add('pagination-fullwidth');
+
     const prevBtn = document.createElement('button');
     prevBtn.id = 'prev-page-all';
     prevBtn.className = 'btn-flat green-text';
@@ -272,16 +284,8 @@
       HL.render.changePage('all', page + 1);
     });
 
-    const pageSpan = document.createElement('span');
-    pageSpan.id = 'current-page-all';
-    pageSpan.style.margin = '0 10px';
-    pageSpan.textContent = `Página ${page}`;
-
-    // No forzamos display en JS. Removemos cualquier inline display por si existía (permitiendo que la CSS pueda manejar el display: flex)
-    pag.style.removeProperty('display');
-    pag.style.removeProperty('alignItems');
-
     pag.appendChild(prevBtn);
+
     // numbered pages
     for (let p = start; p <= end; p++) {
       const nb = document.createElement('button');
@@ -296,7 +300,14 @@
       nb.addEventListener('click', () => HL.render.changePage('all', p));
       pag.appendChild(nb);
     }
+
+    // add the visible pageSpan (kept for accessibility but hidden by CSS)
+    const pageSpan = document.createElement('span');
+    pageSpan.id = 'current-page-all';
+    pageSpan.style.margin = '0 10px';
+    pageSpan.textContent = `Página ${page}`;
     pag.appendChild(pageSpan);
+
     pag.appendChild(nextBtn);
 
     // finally, tell prefetch to maintain window around this page
